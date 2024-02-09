@@ -9,7 +9,7 @@
 
 .description {
   display: inherit;
-  justify-content: inherit;
+  justify-content: end;
   align-items: inherit;
   font-size: 0.85rem;
   max-width: var(--max-width);
@@ -59,9 +59,9 @@
   transition: transform 200ms;
 }
 
-.card h2 {
+.center h2 {
   font-weight: 600;
-  margin-bottom: 0.7rem;
+	padding: 0 .9rem;
 }
 
 .card p {
@@ -79,21 +79,6 @@
   align-items: center;
   position: relative;
   padding: 4rem 0;
-}
-
-.center::before {
-  background: var(--secondary-glow);
-  border-radius: 50%;
-  width: 480px;
-  height: 360px;
-  margin-left: -400px;
-}
-
-.center::after {
-  background: var(--primary-glow);
-  width: 240px;
-  height: 180px;
-  z-index: -1;
 }
 
 .center::before,
@@ -207,16 +192,6 @@
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .vercelLogo {
-    filter: invert(1);
-  }
-
-  .logo {
-    filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
   }
 }
 
