@@ -1,0 +1,49 @@
+env:
+  browser: true
+  es2022: true
+ignorePatterns:
+  - js/
+overrides:
+  - files: ["*.mts"]
+    parserOptions:
+      sourceType: module
+plugins: ['@typescript-eslint']
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - next/core-web-vitals
+rules:
+  comma-dangle:
+    - error
+    - always-multiline
+  eol-last:
+    - error
+    - always
+  indent:
+    - error
+    - tab
+  linebreak-style:
+    - error
+    - unix
+  no-trailing-spaces:
+    - error
+  object-curly-spacing:
+    - error
+    - never
+  prefer-const:
+    - error
+    - destructuring: all
+  quotes:
+    - error
+    - single
+  quote-props:
+    - error
+    - consistent-as-needed
+  semi:
+    - error
+    - always
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - args: none
+  '@typescript-eslint/no-explicit-any':
+    - off
