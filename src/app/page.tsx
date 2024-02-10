@@ -9,14 +9,14 @@ export default function Home() {
 				<Image alt='site logo' className={styles.logo} src='/logo_vye.svg' width={24} height={24}></Image>
 				<h2>Testing Spotify API</h2>
 			</div>
-			
-			<Link href='/api' className={styles.card}>Test API Info</Link>
+
+			<Link href='/demo-api' className={styles.card}>Test API Info</Link>
 			<div className={styles.description}>
 				<p>Additional Resources:</p>
 				<Link href='https://github.com/Aranaris/spotify-artist-overlap' className={styles.card}>Link to Github Repo</Link>
 			</div>
-			
+
 		</main>
-		
+
 	);
 }
