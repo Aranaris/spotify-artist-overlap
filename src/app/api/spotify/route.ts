@@ -1,4 +1,4 @@
-import spotifyBearerToken from "@/app/_lib/spotify";
+import getBearerToken from "@/app/_lib/spotify";
 
 async function getSpotifyData(url:string, token:string) {
 	const res = await fetch(url, {
@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic'; // defaults to auto
 export async function GET(request: Request) {
 	console.log('testing spotify route...');
 
-	const authResponse = await spotifyBearerToken;
+	const authResponse = await getBearerToken();
 	const authData = await authResponse.json();
 	return Response.json({ authData })
 
