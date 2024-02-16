@@ -7,6 +7,13 @@
   min-height: 100vh;
 }
 
+.main p {
+  font-size: 0.9rem;
+	text-align: center;
+  text-wrap: balance;
+	max-width: 80%;
+}
+
 .description {
   display: inherit;
   justify-content: end;
@@ -93,6 +100,24 @@
 .logo {
   position: relative;
 }
+
+
+.button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1182B8;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin: 0 auto;
+}
+.button:hover {
+  border-color: #75a0b4;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
