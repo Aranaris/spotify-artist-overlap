@@ -2,8 +2,8 @@ import clientPromise from "./mongodb";
 
 async function getBearerToken() {
 
-	// const client = await clientPromise;
-	// const db = client.db('spotify_web_app')
+	const client = await clientPromise;
+	const db = client.db('spotify_web_app')
 
 
 	// const token_query = 
@@ -19,11 +19,11 @@ async function getBearerToken() {
 	}
 
 	const res = await fetch(tokenEndpointURI, fetchInput);
-	// const authData = await res.json();
+	const authData = await res.json();
 
-	// await db.collection('token').insertOne(authData);
+	await db.collection('tokens').insertOne(authData);
 
-	return res;
+	return authData;
 }
 
 export default getBearerToken;
