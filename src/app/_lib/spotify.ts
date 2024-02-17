@@ -5,6 +5,7 @@ async function getBearerToken() {
 	// const client = await clientPromise;
 	// const db = client.db('spotify_web_app')
 
+
 	// const token_query = 
 	// const token = await db.collection
 
@@ -17,8 +18,11 @@ async function getBearerToken() {
 		body: `grant_type=client_credentials&client_id=${process.env.SPOTIFY_API_CLIENTID}&client_secret=${process.env.SPOTIFY_API_SECRET}`,
 	}
 
-	console.log(fetchInput);
 	const res = await fetch(tokenEndpointURI, fetchInput);
+	// const authData = await res.json();
+
+	// await db.collection('token').insertOne(authData);
+
 	return res;
 }
 

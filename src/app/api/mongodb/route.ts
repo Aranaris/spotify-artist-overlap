@@ -12,3 +12,9 @@ export async function GET(request: Request) {
 	return Response.json({ movies })
 
 }
+
+export async function POST(request: Request) {
+	console.log('testing mongodb route...');
+
+	const client = await clientPromise;
+}

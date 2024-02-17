@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
 	const authResponse = await getBearerToken();
 	const authData = await authResponse.json();
-	return Response.json({ authData })
+	return Response.json(authData)
 
 	// const artistURL = 'https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg?si=2P9PKYwNRO2wpv6shTm0PQ';
 	// const artistData = await getSpotifyData(artistURL, authData.access_token);
