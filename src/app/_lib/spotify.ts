@@ -7,12 +7,12 @@ function setExpiration(date: Date, seconds: number) {
 }
 
 
-async function getBearerToken() {
+async function getBearerToken(): Promise<string> {
 
 	const client = await clientPromise;
 	const db = client.db('spotify_web_app');
 
-
+	// check to see if a new token is necessary
 	// const token_query =
 	// const token = await db.collection
 
@@ -33,7 +33,7 @@ async function getBearerToken() {
 
 	await db.collection('tokens').insertOne(authData);
 
-	return authData;
+	return authData['access_token'];
 }
 
 export default getBearerToken;

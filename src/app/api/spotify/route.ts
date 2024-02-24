@@ -15,8 +15,8 @@ export const dynamic = 'force-dynamic'; // defaults to auto
 export async function GET(request: Request) {
 	console.log('testing spotify route...');
 
-	const authData = await getBearerToken();
-	return Response.json(authData);
+	const access_token = await getBearerToken();
+	return Response.json(access_token);
 
 	// const artistURL = 'https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg?si=2P9PKYwNRO2wpv6shTm0PQ';
 	// const artistData = await getSpotifyData(artistURL, authData.access_token);

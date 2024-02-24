@@ -13,7 +13,7 @@ export default function Test() {
 		fetch('/api/spotify')
 			.then((res) => res.json())
 			.then((data)=> {
-				setValidToken(data['access_token']);
+				setValidToken(data);
 			});
 	}
 
