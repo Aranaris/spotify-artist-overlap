@@ -13,9 +13,16 @@ async function getBearerToken(): Promise<string> {
 	const db = client.db('spotify_web_app');
 
 	// check to see if a new token is necessary
-	// const token_query =
-	// const token = await db.collection
 
+	const document = await db.collection('tokens').findOne({
+		expire_date: {$gt: new Date()},
+	});
+
+	if (document !== null) {
+		return document['access_token'];
+	}
+
+	// if no valid token, get a new one from spotify and store in MongoDB
 	const tokenEndpointURI = 'https://accounts.spotify.com/api/token';
 	const fetchInput = {
 		method: 'POST',
