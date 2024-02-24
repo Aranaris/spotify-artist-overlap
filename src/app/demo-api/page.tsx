@@ -12,17 +12,13 @@ export default function Test() {
 	function handleSpotifyTokenClick() {
 		fetch('/api/spotify')
 			.then((res) => res.json())
-			.then((data)=> {
-				setValidToken(data);
-			});
+			.then(setValidToken);
 	}
 
 	function handleGetMongoOutput() {
 		fetch('/api/mongodb')
 			.then((res) => res.json())
-			.then((data)=> {
-				setMongoOutput(data);
-			});
+			.then(setMongoOutput);
 	}
 
 	return (
