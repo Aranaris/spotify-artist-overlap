@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import styles from '../page.module.css';
-import { useState } from 'react';
+import {useState} from 'react';
 
 export default function Test() {
 
@@ -13,16 +13,16 @@ export default function Test() {
 		fetch('/api/spotify')
 			.then((res) => res.json())
 			.then((data)=> {
-				setValidToken(data['access_token'])
-			})
+				setValidToken(data['access_token']);
+			});
 	}
 
 	function handleGetMongoOutput() {
 		fetch('/api/mongodb')
 			.then((res) => res.json())
 			.then((data)=> {
-				setMongoOutput(data)
-			})
+				setMongoOutput(data);
+			});
 	}
 
 	return (

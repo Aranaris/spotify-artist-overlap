@@ -1,4 +1,4 @@
-import clientPromise from "@/app/_lib/mongodb";
+import clientPromise from '@/app/_lib/mongodb';
 
 export const dynamic = 'force-dynamic'; // defaults to auto
 export async function GET(request: Request) {
@@ -7,9 +7,9 @@ export async function GET(request: Request) {
 	const client = await clientPromise;
 	const db = client.db('sample_mflix');
 
-	const movies = await db.collection('movies').findOne({'rated': 'TV-G'});
+	const movies = await db.collection('movies').findOne({rated: 'TV-G'});
 
-	return Response.json({ movies })
+	return Response.json({movies});
 
 }
 
