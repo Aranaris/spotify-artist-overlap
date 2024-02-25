@@ -8,11 +8,20 @@ export default function Test() {
 
 	const [validToken, setValidToken] = useState({});
 	const [mongoOutput, setMongoOutput] = useState({});
+	const [spotifyArtist, setSpotifyArtist] = useState({
+		name : '',
+	});
 
 	function handleSpotifyTokenClick() {
-		fetch('/api/spotify')
+		fetch('/api/spotify/auth')
 			.then((res) => res.json())
 			.then(setValidToken);
+	}
+
+	function handleSpotifyGetArtistClick() {
+		fetch('/api/spotify/')
+			.then((res) => res.json())
+			.then(setSpotifyArtist);
 	}
 
 	function handleGetMongoOutput() {
@@ -26,6 +35,9 @@ export default function Test() {
 			<h2>Showing currently implemented API calls:</h2>
 			<button className={styles.button} onClick={handleSpotifyTokenClick}>Test Get Bearer Token</button>
 			<p>{JSON.stringify(validToken)}</p>
+
+			<button className={styles.button} onClick={handleSpotifyGetArtistClick}>Test Get Artist Info</button>
+			<p>{spotifyArtist.name}</p>
 
 			<button className={styles.button} onClick={handleGetMongoOutput}>Test Mongo Query</button>
 			<p>{JSON.stringify(mongoOutput)}</p>

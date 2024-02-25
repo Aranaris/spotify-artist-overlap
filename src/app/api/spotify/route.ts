@@ -1,6 +1,6 @@
 import getBearerToken from '@/app/_lib/spotify';
 
-async function getSpotifyData(url:string, token:string) {
+async function getSpotifyData(url:string, token:string): Promise<string> {
 	const res = await fetch(url, {
 		method: 'GET',
 		headers: {
@@ -13,13 +13,12 @@ async function getSpotifyData(url:string, token:string) {
 
 export const dynamic = 'force-dynamic'; // defaults to auto
 export async function GET(request: Request) {
-	console.log('testing spotify route...');
+	console.log('testing spotify get artist by id route...');
 
 	const access_token = await getBearerToken();
-	return Response.json(access_token);
 
-	// const artistURL = 'https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg?si=2P9PKYwNRO2wpv6shTm0PQ';
-	// const artistData = await getSpotifyData(artistURL, authData.access_token);
+	const artistURL = 'https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg?si=2P9PKYwNRO2wpv6shTm0PQ';
+	const artistData = await getSpotifyData(artistURL, access_token);
 
-	// console.log(artistData);
+	return Response.json(artistData);
 }
