@@ -10,6 +10,7 @@ export default function Test() {
 	const [mongoOutput, setMongoOutput] = useState({});
 	const [spotifyArtist, setSpotifyArtist] = useState({
 		name : '',
+		artists: [],
 	});
 
 	function handleSpotifyTokenClick() {
@@ -37,7 +38,8 @@ export default function Test() {
 			<p>{JSON.stringify(validToken)}</p>
 
 			<button className={styles.button} onClick={handleSpotifyGetArtistClick}>Test Get Artist Info</button>
-			<p>{spotifyArtist.name}</p>
+			<p>Artist: {spotifyArtist.name}</p>
+			<p>Related Artists: {JSON.stringify(spotifyArtist.artists)}</p>
 
 			<button className={styles.button} onClick={handleGetMongoOutput}>Test Mongo Query</button>
 			<p>{JSON.stringify(mongoOutput)}</p>

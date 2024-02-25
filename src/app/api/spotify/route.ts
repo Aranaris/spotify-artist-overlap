@@ -1,6 +1,7 @@
 import getBearerToken from '@/app/_lib/spotify';
 
-async function getSpotifyData(url:string, token:string): Promise<string> {
+
+async function getSpotifyData(url:string, token:string) {
 	const res = await fetch(url, {
 		method: 'GET',
 		headers: {
@@ -17,8 +18,18 @@ export async function GET(request: Request) {
 
 	const access_token = await getBearerToken();
 
-	const artistURL = 'https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg?si=2P9PKYwNRO2wpv6shTm0PQ';
+	const artistID = '45eNHdiiabvmbp4erw26rg';
+	const artistURL = `https://api.spotify.com/v1/artists/${artistID}`;
 	const artistData = await getSpotifyData(artistURL, access_token);
+
+	const relatedArtistsURL = `https://api.spotify.com/v1/artists/${artistID}/related-artists`;
+	const relatedArtistsData = await getSpotifyData(relatedArtistsURL, access_token);
+	const relatedArtistsList = [];
+	for (const artist of relatedArtistsData.artists) {
+		relatedArtistsList.push(artist.name);
+	}
+
+	artistData.artists = relatedArtistsList;
 
 	return Response.json(artistData);
 }
