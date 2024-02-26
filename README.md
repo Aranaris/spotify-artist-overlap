@@ -1,33 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Overview
 
-## Getting Started
+This project is intended to enable a user to login to their spotify account and identify additional artist recommendations based on spotify's analysis on related artists. 
 
-First, run the development server:
+Current spotify app features only show related artists for single artists, but I figured it'd be more interesting/useful to be able to input multiple artists that a user likes and see if those artists have overlapping related artists to provide a better success rate for discovering different artists.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This is a fairly simple algorithm, and based on a cursory review of the api documentation should be doable with the available endpoints. Spotify does not provide additional insight as to how the related artists are determined, so expansion of this application will be limited to what data I am able to retrieve.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Programming Goals
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+As this project is to further my development learning, I will outline specific focuses/features that I would like to implement:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Tools
+- Next.js
+- MongoDB
+- 3rd Party APIs (Spotify)
 
-## Learn More
+### Authorization
+- Social Single Sign-on (Spotify Login)
+- Authorization Code flow with JWT
+- Client Credentials
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+This involves interactions with multiple 3rd party clients, so env variables and configurations in those applications will be needed in order to effectively run this:
+
+### Spotify
+- Go through [Spotify's Documentation](https://developer.spotify.com/documentation/web-api) to setup an app
+- .env variables for Client ID and Client Secret
+
+### MongoDB
+- the mongoDB connection requires a URL with your credentials
 
 ## Deploy on Vercel
 
