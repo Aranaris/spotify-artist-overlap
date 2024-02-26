@@ -1,4 +1,4 @@
-import { getBearerToken } from "@/app/_lib/spotify";
+import {getBearerToken} from '@/app/_lib/spotify';
 
 export const dynamic = 'force-dynamic'; // defaults to auto
 export async function GET(request: Request) {
