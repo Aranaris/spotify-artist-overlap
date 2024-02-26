@@ -6,7 +6,6 @@ function setExpiration(date: Date, seconds: number) {
 	return dateCopy;
 }
 
-
 async function getBearerToken(): Promise<string> {
 
 	const client = await clientPromise;
@@ -43,4 +42,24 @@ async function getBearerToken(): Promise<string> {
 	return authData['access_token'];
 }
 
-export default getBearerToken;
+async function getUserAccessToken(authCode:string): Promise<string> {
+	const redirectURI = 'http://localhost:3000/api/callback/';
+	const tokenEndpointURI = 'https://accounts.spotify.com/api/token';
+	const fetchInput = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_API_CLIENTID + ':' + process.env.SPOTIFY_API_SECRET)).toString('base64'),
+		},
+		body: `grant_type=authorization_code&code=${authCode}&redirect_uri=${encodeURIComponent(redirectURI)}`,
+	};
+
+	const res = await fetch(tokenEndpointURI, fetchInput);
+	const authData = await res.json();
+	return authData;
+}
+
+export {
+	getBearerToken,
+	getUserAccessToken,
+};

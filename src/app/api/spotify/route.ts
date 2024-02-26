@@ -1,4 +1,4 @@
-import getBearerToken from '@/app/_lib/spotify';
+import { getBearerToken } from "@/app/_lib/spotify";
 
 
 async function getSpotifyData(url:string, token:string) {
