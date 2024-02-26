@@ -16,5 +16,5 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
 	console.log('testing mongodb route...');
 
-	const client = await clientPromise;
+	// const client = await clientPromise;
 }

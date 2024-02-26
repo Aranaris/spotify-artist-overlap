@@ -25,16 +25,13 @@
   font-family: var(--font-mono);
 }
 
-.description a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+.description a, .card a {
+	text-decoration: underline;
 }
 
 .description p {
   position: relative;
-  margin: 0;
+	margin: 10px; 
   padding: 1rem;
   background-color: rgba(var(--callout-rgb), 0.5);
   border: 1px solid rgba(var(--callout-border-rgb), 0.3);
@@ -57,8 +54,7 @@
   padding: 1rem 1.2rem;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
-  border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition: background 200ms, border 200ms;
+  border: 1px solid white;
 }
 
 .card span {
@@ -101,22 +97,37 @@
   position: relative;
 }
 
+.spotify-login {
+	background-color: #169c46;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.spotify-login p {
+	white-space: nowrap;
+}
 
 .button {
+	background-color: #1182B8;
+}
+
+.button:hover, .spotify-login:hover {
+  transform: scale(1.2);
+}
+
+.button, .spotify-login {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1182B8;
   cursor: pointer;
   transition: border-color 0.25s;
   margin: 0 auto;
 }
-.button:hover {
-  border-color: #75a0b4;
-}
+
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
