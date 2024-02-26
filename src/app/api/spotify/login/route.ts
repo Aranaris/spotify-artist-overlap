@@ -2,6 +2,8 @@ import {nanoid} from 'nanoid';
 import {redirect} from 'next/navigation';
 
 export async function GET(request: Request) {
+
+	//TODO need to store and check state in callback
 	const state = nanoid(16);
 	const redirectURI = 'http://localhost:3000/api/callback/';
 	const scope = 'user-top-read';
@@ -17,7 +19,4 @@ export async function GET(request: Request) {
 	+ searchParams + `&redirect_uri=${encodeURIComponent(redirectURI)}`;
 
 	redirect(spotifyAuthURI);
-
-	return Response.json(spotifyAuthURI);
-
 }

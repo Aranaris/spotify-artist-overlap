@@ -10,5 +10,5 @@ export async function GET(req:Request) {
 		return new Response('No code provided', {status: 400});
 	}
 
-	return Response.json(req);
+	return Response.json(code);
 }
