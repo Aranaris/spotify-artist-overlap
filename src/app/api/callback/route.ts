@@ -18,7 +18,8 @@ export async function GET(req:Request) {
 		return new Response('No code provided', {status: 400});
 	}
 
-	const stuff = await getUserAccessToken(code);
+	cookies().delete('state');
+	const userAuthData = await getUserAccessToken(code);
 
-	return Response.json(stuff);
+	return Response.json(userAuthData);
 }
