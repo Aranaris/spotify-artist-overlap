@@ -1,10 +1,14 @@
-import {nanoid} from 'nanoid';
+import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
 
 export async function GET(request: Request) {
 
-	//TODO need to store and check state in callback
-	const state = nanoid(16);
+	const state = cookies().get('state')?.value;
+
+	if (typeof state === 'undefined') {
+		return Response.json({status: 400});
+	}
+
 	const redirectURI = 'http://localhost:3000/api/callback/';
 	const scope = 'user-top-read';
 

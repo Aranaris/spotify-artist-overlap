@@ -29,9 +29,6 @@ export async function GET(request: Request) {
 		relatedArtistsList.push(artist.name);
 	}
 
-	// const currentUserData = await getSpotifyData('https://api.spotify.com/v1/me', access_token);
-	// console.log(currentUserData);
-
 	artistData.artists = relatedArtistsList;
 
 	return Response.json(artistData);
