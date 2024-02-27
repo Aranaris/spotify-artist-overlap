@@ -56,7 +56,8 @@ async function getUserAccessToken(authCode:string): Promise<string> {
 
 	const res = await fetch(tokenEndpointURI, fetchInput);
 	const authData = await res.json();
-	return authData;
+	const {access_token} = authData;
+	return access_token;
 }
 
 export {

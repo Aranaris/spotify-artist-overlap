@@ -1,8 +1,7 @@
-// import jwt from 'jsonwebtoken';
-// import {redirect} from 'next/navigation';
+import jwt from 'jsonwebtoken';
 import {getUserAccessToken} from '@/app/_lib/spotify';
 import {cookies} from 'next/headers';
-import {redirect} from 'next/navigation';
+import { NextResponse } from 'next/server';
 
 export async function GET(req:Request) {
 	const requestURL = new URL(req.url);
@@ -21,9 +20,21 @@ export async function GET(req:Request) {
 
 	cookies().delete('state');
 
-	const userAuthData = await getUserAccessToken(code);
+	try {
+		const access_token = await getUserAccessToken(code);
+		const jwtToken = jwt.sign({access_token}, process.env.JWT_SECRET_KEY, {
+			expiresIn: '1h',
+		});
 
-	const {access_token} = userAuthData;
-	console.log(access_token);
-	redirect('/profile');
+		cookies().set('auth', jwtToken, {
+			httpOnly: true,
+			maxAge: 3600,
+		});
+
+		return NextResponse.redirect('http://localhost:3000/profile');
+	} catch (err) {
+		console.error(err);
+		return new Response('Internal server error', {status: 500});
+	}
+
 }

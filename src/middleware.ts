@@ -1,13 +1,13 @@
 import {NextRequest, NextResponse} from 'next/server';
 
 export function middleware(request: NextRequest) {
-	const currentUser = request.cookies.get('currentUser')?.value;
-	if (currentUser) {
+	const jwtToken = request.cookies.get('auth')?.value;
+	if (jwtToken) {
 		console.log('successful authentication');
 		return NextResponse.next();
 	}
 	console.log('unauthenticated');
-	NextResponse.redirect(new URL('/', request.url));
+	return NextResponse.redirect('http://localhost:3000/');
 }
 
 export const config = {
