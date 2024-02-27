@@ -2,6 +2,7 @@
 // import {redirect} from 'next/navigation';
 import {getUserAccessToken} from '@/app/_lib/spotify';
 import {cookies} from 'next/headers';
+import {redirect} from 'next/navigation';
 
 export async function GET(req:Request) {
 	const requestURL = new URL(req.url);
@@ -19,7 +20,10 @@ export async function GET(req:Request) {
 	}
 
 	cookies().delete('state');
+
 	const userAuthData = await getUserAccessToken(code);
 
-	return Response.json(userAuthData);
+	const {access_token} = userAuthData;
+	console.log(access_token);
+	redirect('/profile');
 }

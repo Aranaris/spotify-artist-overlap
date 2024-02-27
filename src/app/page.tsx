@@ -3,13 +3,13 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import Link from 'next/link';
-import {setCookie} from './actions';
+import {setStateCookie} from './actions';
 import {useRouter} from 'next/navigation';
 
 export default function Home() {
 	const router = useRouter();
 	function handleSpotifyClick() {
-		setCookie();
+		setStateCookie();
 		router.push('/api/spotify/login');
 	}
 	return (
