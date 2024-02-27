@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import {getUserAccessToken} from '@/app/_lib/spotify';
 import {cookies} from 'next/headers';
-import { NextResponse } from 'next/server';
+import {NextResponse} from 'next/server';
 
 export async function GET(req:Request) {
 	const requestURL = new URL(req.url);

@@ -1,5 +1,4 @@
 import {cookies} from 'next/headers';
-import {redirect} from 'next/navigation';
 
 export async function GET(request: Request) {
 
@@ -7,6 +6,11 @@ export async function GET(request: Request) {
 
 	if (typeof state === 'undefined') {
 		return Response.json({status: 400});
+	}
+
+	if (cookies().get('auth')) {
+		cookies().delete('state');
+		return Response.redirect(new URL('/profile', request.url));
 	}
 
 	const redirectURI = 'http://localhost:3000/api/callback/';
@@ -22,5 +26,5 @@ export async function GET(request: Request) {
 	const spotifyAuthURI = 'https://accounts.spotify.com/authorize?'
 	+ searchParams + `&redirect_uri=${encodeURIComponent(redirectURI)}`;
 
-	redirect(spotifyAuthURI);
+	return Response.redirect(spotifyAuthURI);
 }

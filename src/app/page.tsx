@@ -8,8 +8,8 @@ import {useRouter} from 'next/navigation';
 
 export default function Home() {
 	const router = useRouter();
-	function handleSpotifyClick() {
-		setStateCookie();
+	async function handleSpotifyClick() {
+		await setStateCookie();
 		router.push('/api/spotify/login');
 	}
 	return (

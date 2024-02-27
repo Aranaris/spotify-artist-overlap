@@ -35,14 +35,14 @@ export default function Test() {
 		<main className={styles.main}>
 			<h2>Showing currently implemented API calls:</h2>
 			<button className={styles.button} onClick={handleSpotifyTokenClick}>Test Get Bearer Token</button>
-			<p>{JSON.stringify(validToken)}</p>
+			<p>Bearer Token: {JSON.stringify(validToken)}</p>
 
 			<button className={styles.button} onClick={handleSpotifyGetArtistClick}>Test Get Artist Info</button>
 			<p>Artist: {spotifyArtist.name}</p>
 			<p>Related Artists: {JSON.stringify(spotifyArtist.artists)}</p>
 
 			<button className={styles.button} onClick={handleGetMongoOutput}>Test Mongo Query</button>
-			<p>{JSON.stringify(mongoOutput)}</p>
+			<p>Mongo Output: {JSON.stringify(mongoOutput)}</p>
 			<Link href='/' className={styles.card}>Back to Home</Link>
 		</main>
 	);

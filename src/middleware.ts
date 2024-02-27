@@ -1,8 +1,10 @@
 import {NextRequest, NextResponse} from 'next/server';
+// import { verifyJWT } from './app/_lib/spotify';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
 	const jwtToken = request.cookies.get('auth')?.value;
 	if (jwtToken) {
+		// await verifyJWT(jwtToken);
 		console.log('successful authentication');
 		return NextResponse.next();
 	}
