@@ -12,8 +12,12 @@ export async function GET(
 
 	const userID = params.id;
 	const user = await db.collection('users').findOne({id: userID});
-
-	return Response.json({user});
+	if (user) {
+		return Response.json({
+			display_name: user['display_name'],
+			link: user['href'],
+		});
+	}
 
 }
 

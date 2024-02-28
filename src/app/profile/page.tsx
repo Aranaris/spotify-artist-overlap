@@ -14,7 +14,7 @@ export default function Profile() {
 	function handleShowUser() {
 		fetch(`/api/mongodb/user/${currentUser}`)
 			.then((res) => res.json())
-			.then((data) => setUserDisplayName(data['user']));
+			.then(setUserDisplayName);
 	}
 
 	return (
