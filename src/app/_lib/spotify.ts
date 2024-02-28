@@ -61,6 +61,21 @@ async function getUserAccessToken(authCode:string): Promise<string> {
 	return access_token;
 }
 
+async function getUserInfo(authCode:string) {
+	const spotifyUserEndpointURI = 'https://api.spotify.com/v1/me';
+	const fetchInput = {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + authCode,
+		},
+	};
+
+	const res = await fetch(spotifyUserEndpointURI, fetchInput);
+	const userData = await res.json();
+	const {display_name, id, href} = userData;
+	return {display_name, id, href};
+
+}
 // async function verifyJWT(token:string) :Promise<boolean>{
 // 	const publicKey = await importSPKI(process.env.JWT_PUBLIC_KEY, 'RS256');
 // 	const decoded = await jwtVerify(token, publicKey);
@@ -71,5 +86,6 @@ async function getUserAccessToken(authCode:string): Promise<string> {
 export {
 	getBearerToken,
 	getUserAccessToken,
+	getUserInfo,
 	// verifyJWT,
 };
