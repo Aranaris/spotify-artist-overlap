@@ -11,7 +11,9 @@ export async function GET(
 	const db = client.db('spotify_web_app');
 
 	const userID = params.id;
+	console.log(userID);
 	const user = await db.collection('users').findOne({id: userID});
+	console.log(user);
 	if (user) {
 		return Response.json({
 			display_name: user['display_name'],

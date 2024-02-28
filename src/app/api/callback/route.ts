@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import {encrypt} from '@/app/_lib/auth';
 import {getUserAccessToken, getUserInfo} from '@/app/_lib/spotify';
 import {cookies} from 'next/headers';
 import {NextResponse} from 'next/server';
@@ -24,20 +24,19 @@ export async function GET(req:Request) {
 	try {
 		const access_token = await getUserAccessToken(code);
 		const userData = await getUserInfo(access_token);
-		const jwtToken = jwt.sign({access_token}, process.env.JWT_SECRET_KEY, {
-			expiresIn: '1h',
-		});
 
-		await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
-			method: 'POST',
-			body: JSON.stringify(userData),
-		});
+		// await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(userData),
+		// });
 
-		cookies().set('auth', jwtToken, {
+		userData['expires'] = new Date(Date.now() + 3600 * 1000);
+		const session = await encrypt(userData);
+
+		cookies().set('session', session, {
 			httpOnly: true,
-			maxAge: 3600,
+			expires: userData['expires'],
 		});
-		cookies().set('userid', userData['id']);
 
 		return NextResponse.redirect('http://localhost:3000/profile');
 	} catch (err) {

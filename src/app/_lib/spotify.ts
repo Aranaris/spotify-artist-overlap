@@ -71,9 +71,23 @@ async function getUserInfo(authCode:string) {
 	};
 
 	const res = await fetch(spotifyUserEndpointURI, fetchInput);
-	const userData = await res.json();
-	const {display_name, id, href} = userData;
-	return {display_name, id, href};
+
+	return await res.json();
+
+}
+
+async function getUserTop(authCode:string) {
+	const spotifyUserTopArtistsURI = 'https://api.spotify.com/v1/me/top/artists';
+	const fetchInput = {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + authCode,
+		},
+	};
+
+	const res = await fetch(spotifyUserTopArtistsURI, fetchInput);
+	const userTopData = await res.json();
+	return userTopData;
 
 }
 // async function verifyJWT(token:string) :Promise<boolean>{
@@ -87,5 +101,6 @@ export {
 	getBearerToken,
 	getUserAccessToken,
 	getUserInfo,
+	getUserTop,
 	// verifyJWT,
 };
