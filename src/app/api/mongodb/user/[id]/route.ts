@@ -7,13 +7,13 @@ export async function GET(
 ) {
 	console.log('testing get user route...');
 
+	const userID = params.id;
+
 	const client = await clientPromise;
 	const db = client.db('spotify_web_app');
 
-	const userID = params.id;
-	console.log(userID);
 	const user = await db.collection('users').findOne({id: userID});
-	console.log(user);
+
 	if (user) {
 		return Response.json({
 			display_name: user['display_name'],

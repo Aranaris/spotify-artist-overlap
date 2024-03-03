@@ -1,8 +1,9 @@
 import {NextRequest, NextResponse} from 'next/server';
-// import { verifyJWT } from './app/_lib/spotify';
 
 export async function middleware(request: NextRequest) {
 	const jwtToken = request.cookies.get('session')?.value;
+
+	//Todo add token verification logic here
 	const verifiedToken =
 		jwtToken;
 

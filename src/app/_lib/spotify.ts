@@ -1,5 +1,4 @@
 import clientPromise from './mongodb';
-// import { importSPKI, jwtVerify } from 'jose';
 
 function setExpiration(date: Date, seconds: number) {
 	const dateCopy = new Date(date);
@@ -50,7 +49,7 @@ async function getUserAccessToken(authCode:string): Promise<string> {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
-			'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_API_CLIENTID + ':' + process.env.SPOTIFY_API_SECRET)).toString('base64'),
+			'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_API_CLIENTID}:${process.env.SPOTIFY_API_SECRET}`).toString('base64'),
 		},
 		body: `grant_type=authorization_code&code=${authCode}&redirect_uri=${encodeURIComponent(redirectURI)}`,
 	};
@@ -90,17 +89,10 @@ async function getUserTop(authCode:string) {
 	return userTopData;
 
 }
-// async function verifyJWT(token:string) :Promise<boolean>{
-// 	const publicKey = await importSPKI(process.env.JWT_PUBLIC_KEY, 'RS256');
-// 	const decoded = await jwtVerify(token, publicKey);
-// 	console.log(decoded);
-// 	return false;
-// }
 
 export {
 	getBearerToken,
 	getUserAccessToken,
 	getUserInfo,
 	getUserTop,
-	// verifyJWT,
 };
