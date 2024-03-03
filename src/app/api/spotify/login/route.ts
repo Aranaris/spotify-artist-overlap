@@ -21,10 +21,10 @@ export async function GET(request: Request) {
 		client_id: process.env.SPOTIFY_API_CLIENTID || '',
 		scope: scope,
 		state: state,
+		redirect_uri:redirectURI,
 	};
-	const searchParams = new URLSearchParams(params).toString();
-	const spotifyAuthURI = 'https://accounts.spotify.com/authorize?'
-	+ searchParams + `&redirect_uri=${encodeURIComponent(redirectURI)}`;
+	const searchParams = new URLSearchParams(params);
 
+	const spotifyAuthURI = `https://accounts.spotify.com/authorize?${searchParams}`;
 	return Response.redirect(spotifyAuthURI);
 }

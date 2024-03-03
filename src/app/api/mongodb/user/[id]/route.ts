@@ -35,7 +35,7 @@ export async function POST(
 	const userData = await request.json();
 	const userID = params.id;
 	const user = await db.collection('users').findOne({id: userID});
-	console.log(user);
+
 	if (!user) {
 		await db.collection('users').insertOne(userData);
 		console.log('user added!');
