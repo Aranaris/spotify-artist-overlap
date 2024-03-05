@@ -1,8 +1,6 @@
 import * as mongoDB from 'mongodb';
 
-const uri:string = process.env.MONGODB_URI;
-
-const client:mongoDB.MongoClient = new mongoDB.MongoClient(uri, {
+const client:mongoDB.MongoClient = new mongoDB.MongoClient(process.env.MONGODB_URI, {
 	serverApi: {
 		version: mongoDB.ServerApiVersion.v1,
 		strict: true,

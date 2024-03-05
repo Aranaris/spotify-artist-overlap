@@ -5,11 +5,10 @@ export async function GET(request: Request) {
 	console.log('testing mongodb route...');
 
 	const client = await clientPromise;
-	const db = client.db('sample_mflix');
+	const db = client.db('spotify_web_app');
+	const userList = await db.collection('users').findOne({});
 
-	const movies = await db.collection('movies').findOne({rated: 'TV-G'});
-
-	return Response.json({movies});
+	return Response.json(userList);
 
 }
 

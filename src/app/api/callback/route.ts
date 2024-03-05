@@ -25,10 +25,10 @@ export async function GET(req:Request) {
 		const access_token = await getUserAccessToken(code);
 		const userData = await getUserInfo(access_token);
 
-		// await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
-		// 	method: 'POST',
-		// 	body: JSON.stringify(userData),
-		// });
+		await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
+			method: 'POST',
+			body: JSON.stringify(userData),
+		});
 
 		userData['expires'] = new Date(Date.now() + 3600 * 1000);
 		const session = await encrypt(userData);
