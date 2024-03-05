@@ -38,7 +38,7 @@ export async function GET(req:Request) {
 			expires: userData['expires'],
 		});
 
-		return NextResponse.redirect('http://localhost:3000/profile');
+		return NextResponse.redirect(`http://localhost:3000/profile/${userData['id']}`);
 	} catch (err) {
 		console.error(err);
 		return new Response('Internal server error', {status: 500});

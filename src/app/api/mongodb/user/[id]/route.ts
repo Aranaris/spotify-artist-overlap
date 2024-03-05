@@ -5,7 +5,7 @@ export async function GET(
 	request: Request,
 	{params}: { params: {id:string}},
 ) {
-	console.log('testing get user route...');
+	console.log('testing get user route for user: ' + params.id);
 
 	const userID = params.id;
 
