@@ -23,8 +23,11 @@ export async function GET(req:Request) {
 
 	try {
 		const authData = await getUserAccessToken(code);
-		const userData = await getUserInfo(authData['access_token']);
+		if (authData.error) {
+			throw new Error(authData.error.message);
+		}
 
+		const userData = await getUserInfo(authData['access_token']);
 		if (userData.error) {
 			throw new Error(userData.error.message);
 		}
