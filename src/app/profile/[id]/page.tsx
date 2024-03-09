@@ -20,7 +20,7 @@ export default function Profile({params}: { params: { id: string } }) {
 
 	async function handleGetTopArtists() {
 		await fetch('/api/spotify/top')
-			.then(res => res.json).then(setTopArtistList);
+			.then(res => res.json()).then(setTopArtistList);
 	}
 
 	return (
