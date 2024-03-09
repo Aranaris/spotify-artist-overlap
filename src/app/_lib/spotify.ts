@@ -42,7 +42,7 @@ async function getBearerToken(): Promise<string> {
 	return authData['access_token'];
 }
 
-async function getUserAccessToken(authCode:string): Promise<string> {
+async function getUserAccessToken(authCode:string): Promise<any> {
 	const redirectURI = 'http://localhost:3000/api/callback/';
 	const tokenEndpointURI = 'https://accounts.spotify.com/api/token';
 	const fetchInput = {
@@ -56,8 +56,7 @@ async function getUserAccessToken(authCode:string): Promise<string> {
 
 	const res = await fetch(tokenEndpointURI, fetchInput);
 	const authData = await res.json();
-	const {access_token} = authData;
-	return access_token;
+	return authData;
 }
 
 async function getUserInfo(authCode:string) {

@@ -22,8 +22,12 @@ export async function GET(req:Request) {
 	cookies().delete('state');
 
 	try {
-		const access_token = await getUserAccessToken(code);
-		const userData = await getUserInfo(access_token);
+		const authData = await getUserAccessToken(code);
+		const userData = await getUserInfo(authData['access_token']);
+
+		if (userData.error) {
+			throw new Error(userData.error.message);
+		}
 
 		await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
 			method: 'POST',
@@ -31,6 +35,20 @@ export async function GET(req:Request) {
 		});
 
 		userData['expires'] = new Date(Date.now() + 3600 * 1000);
+
+		const userTokenData = {
+			access_token: authData['access_token'],
+			spotifyid: userData['id'],
+			expires: userData['expires'],
+			scope: authData['scope'],
+			refresh_token: authData['refresh_token'],
+		};
+
+		await fetch('http://localhost:3000/api/mongodb/', {
+			method: 'POST',
+			body: JSON.stringify(userTokenData),
+		});
+
 		const session = await encrypt(userData);
 
 		cookies().set('session', session, {

@@ -15,5 +15,18 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
 	console.log('testing mongodb route...');
 
-	// const client = await clientPromise;
+	const client = await clientPromise;
+
+	const db = client.db('spotify_web_app');
+	const userTokenData = await request.json();
+
+	try {
+		await db.collection('tokens').insertOne(userTokenData);
+		console.log('user token added');
+		return Response.json({});
+	} catch (err) {
+		console.log(err);
+		return new Response('Internal server error', {status: 500});
+	}
+
 }

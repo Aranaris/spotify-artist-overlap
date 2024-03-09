@@ -10,6 +10,7 @@ export default function Profile({params}: { params: { id: string } }) {
 	const [userDisplayName, setUserDisplayName] = useState({
 		display_name:'',
 	});
+	const [topArtistList, setTopArtistList] = useState({});
 
 	useEffect(() => {
 		fetch(`/api/mongodb/user/${currentUser}`)
@@ -17,11 +18,18 @@ export default function Profile({params}: { params: { id: string } }) {
 			.then(setUserDisplayName);
 	}, [currentUser]);
 
+	async function handleGetTopArtists() {
+		await fetch('/api/spotify/top')
+			.then(res => res.json).then(setTopArtistList);
+	}
+
 	return (
 		<section className={styles.main}>
 			<p>Welcome to your profile {userDisplayName['display_name']}!</p>
-			{/* <button className={styles.button} onClick={handleShowUser}>Test Get User Info</button> */}
 			<p>{JSON.stringify(userDisplayName)}</p>
+
+			<button className={styles.button} onClick={handleGetTopArtists}>Get Top Artists</button>
+			<p>{JSON.stringify(topArtistList)}</p>
 			<Link href='/' className={styles.card}>Back to Home</Link>
 		</section>
 	);
