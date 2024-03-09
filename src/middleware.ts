@@ -1,21 +1,19 @@
-import {NextRequest, NextResponse} from 'next/server';
+import {NextRequest} from 'next/server';
+import {updateSession} from './app/_lib/auth';
 
 export async function middleware(request: NextRequest) {
-	const jwtToken = request.cookies.get('session')?.value;
+	console.log('test middleware');
+	return await updateSession(request);
 
-	//Todo add token verification logic here
-	const verifiedToken =
-		jwtToken;
-
-	if (verifiedToken) {
-		console.log('successful authentication');
-		return NextResponse.next();
-	}
-	console.log('unauthenticated');
-	return NextResponse.redirect('http://localhost:3000/');
+	// if (verifiedToken) {
+	// 	console.log('successful authentication');
+	// 	return NextResponse.next();
+	// }
+	// console.log('unauthenticated');
+	// return NextResponse.redirect('http://localhost:3000/');
 }
 
 export const config = {
-	matcher: ['/profile/:path'],
+	matcher: ['/profile/:path*'],
 };
 

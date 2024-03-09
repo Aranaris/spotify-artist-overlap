@@ -19,7 +19,7 @@ export default function Profile({params}: { params: { id: string } }) {
 	}, [currentUser]);
 
 	function handleGetSessionPayload() {
-		fetch('/api/spotify/top')
+		fetch('/api/spotify/auth')
 			.then(res => res.json()).then(setSessionPayload);
 	}
 

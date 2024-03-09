@@ -1,10 +1,8 @@
-import {getBearerToken} from '@/app/_lib/spotify';
+import {getSession} from '@/app/_lib/auth';
 
 export const dynamic = 'force-dynamic'; // defaults to auto
 export async function GET(request: Request) {
-	console.log('testing spotify route...');
+	const parsed = await getSession();
 
-	const access_token = await getBearerToken();
-
-	return Response.json(access_token);
+	return Response.json(parsed);
 }

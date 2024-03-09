@@ -1,6 +1,6 @@
 import {SignJWT, jwtVerify} from 'jose';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import {cookies} from 'next/headers';
+import {NextRequest, NextResponse} from 'next/server';
 
 interface UserJwtPayload {
 	[key: string]: string,
@@ -12,7 +12,7 @@ export async function encrypt(payload: UserJwtPayload) {
 	return await new SignJWT(payload)
 		.setProtectedHeader({alg:'HS256'})
 		.setIssuedAt()
-		.setExpirationTime('5 minutes from now')
+		.setExpirationTime('10 minutes from now')
 		.sign(key);
 }
 
@@ -34,7 +34,7 @@ export async function updateSession(request: NextRequest) {
 	if(!session) return;
 
 	const parsed = await decrypt(session);
-	parsed.expires = new Date(Date.now() + 10 * 1000);
+	parsed.expires = new Date(Date.now() + 10 * 60 * 1000);
 
 	const res = NextResponse.next();
 	res.cookies.set({
