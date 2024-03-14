@@ -1,5 +1,5 @@
 'use client';
-
+//TODO refactor this into a server component and use session to update values
 import Link from 'next/link';
 import styles from '../page.module.css';
 import {useState} from 'react';

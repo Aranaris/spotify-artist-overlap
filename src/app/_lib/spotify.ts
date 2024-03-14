@@ -6,6 +6,21 @@ function setExpiration(date: Date, seconds: number) {
 	return dateCopy;
 }
 
+export async function getUserToken(userID: string): Promise<string> {
+	const client = await clientPromise;
+	const db = client.db('spotify_web_app');
+
+	const document = await db.collection('tokens').findOne({
+		expires: {$gt: new Date().toISOString()},
+		spotifyid: {$eq: userID},
+	});
+
+	if (document !== null) {
+		return document['access_token'];
+	}
+	return Promise.resolve('');
+}
+
 async function getBearerToken(): Promise<string> {
 
 	const client = await clientPromise;
@@ -42,7 +57,7 @@ async function getBearerToken(): Promise<string> {
 	return authData['access_token'];
 }
 
-async function getUserAccessToken(authCode:string): Promise<any> {
+async function getNewTokenFromSpotify(authCode:string): Promise<any> {
 	const redirectURI = 'http://localhost:3000/api/callback/';
 	const tokenEndpointURI = 'https://accounts.spotify.com/api/token';
 	const fetchInput = {
@@ -74,12 +89,12 @@ async function getUserInfo(authCode:string) {
 
 }
 
-async function getUserTop(authCode:string) {
+async function getUserTop(userID: string) {
 	const spotifyUserTopArtistsURI = 'https://api.spotify.com/v1/me/top/artists';
 	const fetchInput = {
 		method: 'GET',
 		headers: {
-			Authorization: 'Bearer ' + authCode,
+			Authorization: 'Bearer ' + '<authCode>',
 		},
 	};
 
@@ -91,7 +106,7 @@ async function getUserTop(authCode:string) {
 
 export {
 	getBearerToken,
-	getUserAccessToken,
+	getNewTokenFromSpotify as getUserAccessToken,
 	getUserInfo,
 	getUserTop,
 };
