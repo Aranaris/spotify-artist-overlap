@@ -91,10 +91,11 @@ async function getUserInfo(authCode:string) {
 
 async function getUserTop(userID: string) {
 	const spotifyUserTopArtistsURI = 'https://api.spotify.com/v1/me/top/artists';
+	const token = await getUserToken(userID);
 	const fetchInput = {
 		method: 'GET',
 		headers: {
-			Authorization: 'Bearer ' + '<authCode>',
+			Authorization: 'Bearer ' + token,
 		},
 	};
 
