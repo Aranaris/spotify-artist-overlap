@@ -18,13 +18,13 @@ export async function getUserToken(userID: string): Promise<string> {
 		if (document['expires'] > new Date().toISOString()) {
 			return document['access_token'];
 		}
-		return refreshUserToken(document['refresh_token']);
+		return refreshUserToken(userID, document['refresh_token']);
 	}
 
 	return Promise.resolve('');
 }
 
-async function refreshUserToken(refreshToken: string): Promise<string> {
+async function refreshUserToken(userID: string, refreshToken: string): Promise<string> {
 	const url = 'https://accounts.spotify.com/api/token';
 
 	const fetchInput = {
@@ -36,9 +36,24 @@ async function refreshUserToken(refreshToken: string): Promise<string> {
 		body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
 	};
 	const body = await fetch(url, fetchInput);
-	const response = await body.json();
+	const authData = await body.json();
 
-	return response['access_token'];
+	const expires = new Date(Date.now() + 3600 * 1000);
+
+	const userTokenData = {
+		access_token: authData['access_token'],
+		spotifyid: userID,
+		expires,
+		scope: authData['scope'],
+		refresh_token: authData['refresh_token'],
+	};
+
+	await fetch('http://localhost:3000/api/mongodb/', {
+		method: 'POST',
+		body: JSON.stringify(userTokenData),
+	});
+
+	return authData['access_token'];
 }
 
 async function getBearerToken(): Promise<string> {
@@ -154,7 +169,7 @@ async function getUserTop(userID: string): Promise<Array<Item>> {
 
 export {
 	getBearerToken,
-	getNewTokenFromSpotify as getUserAccessToken,
+	getNewTokenFromSpotify,
 	getUserInfo,
 	getUserTop,
 };

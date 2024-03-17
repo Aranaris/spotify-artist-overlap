@@ -1,5 +1,5 @@
 import {encrypt} from '@/app/_lib/auth';
-import {getUserAccessToken, getUserInfo} from '@/app/_lib/spotify';
+import {getNewTokenFromSpotify, getUserInfo} from '@/app/_lib/spotify';
 import {cookies} from 'next/headers';
 import {NextResponse} from 'next/server';
 
@@ -22,7 +22,7 @@ export async function GET(req:Request) {
 	cookies().delete('state');
 
 	try {
-		const authData = await getUserAccessToken(code);
+		const authData = await getNewTokenFromSpotify(code);
 		if (authData.error) {
 			throw new Error(authData.error.message);
 		}
@@ -45,7 +45,7 @@ export async function GET(req:Request) {
 
 		const sessionCookieData = {
 			spotifyid: userData['id'],
-			expires: expires.toISOString(),
+			expires: JSON.stringify(expires),
 			display_name: userData['display_name'],
 		};
 
