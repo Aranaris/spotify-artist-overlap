@@ -28,21 +28,12 @@ export async function GET(req:Request) {
 		}
 
 		const userData = await getUserInfo(authData['access_token']);
-		if (userData.error) {
-			throw new Error(userData.error.message);
-		}
-
-		await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
-			method: 'POST',
-			body: JSON.stringify(userData),
-		});
-
-		userData['expires'] = new Date(Date.now() + 3600 * 1000);
+		const expires = new Date(Date.now() + 3600 * 1000);
 
 		const userTokenData = {
 			access_token: authData['access_token'],
 			spotifyid: userData['id'],
-			expires: userData['expires'],
+			expires,
 			scope: authData['scope'],
 			refresh_token: authData['refresh_token'],
 		};
@@ -52,11 +43,17 @@ export async function GET(req:Request) {
 			body: JSON.stringify(userTokenData),
 		});
 
-		const session = await encrypt(userData);
+		const sessionCookieData = {
+			spotifyid: userData['id'],
+			expires: expires.toISOString(),
+			display_name: userData['display_name'],
+		};
+
+		const session = await encrypt(sessionCookieData);
 
 		cookies().set('session', session, {
 			httpOnly: true,
-			expires: userData['expires'],
+			expires,
 		});
 
 		return NextResponse.redirect(`http://localhost:3000/profile/${userData['id']}`);

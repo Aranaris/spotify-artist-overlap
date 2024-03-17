@@ -3,6 +3,7 @@
 import {useEffect, useState} from 'react';
 import styles from '../../page.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Profile({params}: { params: { id: string } }) {
 
@@ -10,6 +11,7 @@ export default function Profile({params}: { params: { id: string } }) {
 	const [userInfo, setUserInfo] = useState({
 		display_name:'',
 		link:'',
+		image_url:'',
 	});
 
 	const [sessionPayload, setSessionPayload] = useState({});
@@ -33,8 +35,13 @@ export default function Profile({params}: { params: { id: string } }) {
 
 	return (
 		<section className={styles.main}>
-			<p>Welcome to your profile {userInfo['display_name']}!</p>
-			<ul>
+			{ userInfo['display_name'] !== '' &&
+			<div className={styles.center}>
+				<Image alt='user profile' className={styles.logo} src={userInfo['image_url']} width={24} height={24}></Image>
+				<h2>{userInfo['display_name']}</h2>
+			</div>
+			}
+			<ul className={styles['info-list']}>
 				<li>Display Name: {userInfo['display_name']}</li>
 				<li>Spotify API Link: <a href={userInfo['link']}>{userInfo['link']}</a></li>
 			</ul>

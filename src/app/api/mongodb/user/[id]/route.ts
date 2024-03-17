@@ -15,9 +15,11 @@ export async function GET(
 	const user = await db.collection('users').findOne({id: userID});
 
 	if (user) {
+		console.log(user['images'][0]['url']);
 		return Response.json({
 			display_name: user['display_name'],
 			link: user['href'],
+			image_url: user['images'][0]['url'],
 		});
 	}
 

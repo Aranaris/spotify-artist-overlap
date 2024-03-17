@@ -74,7 +74,14 @@ async function getNewTokenFromSpotify(authCode:string): Promise<any> {
 	return authData;
 }
 
-async function getUserInfo(authCode:string) {
+type User = {
+	display_name: string,
+	href: string,
+	images: Array<any>,
+	id: string,
+}
+
+async function getUserInfo(authCode:string): Promise<User> {
 	const spotifyUserEndpointURI = 'https://api.spotify.com/v1/me';
 	const fetchInput = {
 		method: 'GET',
@@ -84,9 +91,25 @@ async function getUserInfo(authCode:string) {
 	};
 
 	const res = await fetch(spotifyUserEndpointURI, fetchInput);
+	const {id, href, images, display_name, error} = await res.json();
 
-	return await res.json();
+	if (error) {
+		throw new Error(error.message);
+	}
 
+	const userData = {
+		id,
+		href,
+		images,
+		display_name,
+	};
+
+	await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
+		method: 'POST',
+		body: JSON.stringify(userData),
+	});
+
+	return userData;
 }
 
 type Item = {
