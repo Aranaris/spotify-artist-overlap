@@ -7,8 +7,9 @@ import Link from 'next/link';
 export default function Profile({params}: { params: { id: string } }) {
 
 	const currentUser = params.id;
-	const [userDisplayName, setUserDisplayName] = useState({
+	const [userInfo, setUserInfo] = useState({
 		display_name:'',
+		link:'',
 	});
 
 	const [sessionPayload, setSessionPayload] = useState({});
@@ -17,7 +18,7 @@ export default function Profile({params}: { params: { id: string } }) {
 	useEffect(() => {
 		fetch(`/api/mongodb/user/${currentUser}`)
 			.then((res) => res.json())
-			.then(setUserDisplayName);
+			.then(setUserInfo);
 	}, [currentUser]);
 
 	function handleGetSessionPayload() {
@@ -32,8 +33,11 @@ export default function Profile({params}: { params: { id: string } }) {
 
 	return (
 		<section className={styles.main}>
-			<p>Welcome to your profile {userDisplayName['display_name']}!</p>
-			<p>{JSON.stringify(userDisplayName)}</p>
+			<p>Welcome to your profile {userInfo['display_name']}!</p>
+			<ul>
+				<li>Display Name: {userInfo['display_name']}</li>
+				<li>Spotify API Link: <a href={userInfo['link']}>{userInfo['link']}</a></li>
+			</ul>
 
 			<button className={styles.button} onClick={handleGetUserTopArtists}>Get Top Artists</button>
 			<p>{JSON.stringify(userTopArtists)}</p>

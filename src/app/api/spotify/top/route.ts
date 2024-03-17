@@ -8,9 +8,7 @@ export async function GET(request: NextRequest) {
 	const parsed = await getSession();
 	const userID = parsed['id'];
 	const topData = await getUserTop(userID);
-	const artists = [];
-	for (const data of topData['items']) {
-		artists.push(data['name']);
-	}
+	const artists = topData.map(data => data['name']);
+
 	return Response.json(artists);
 }

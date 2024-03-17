@@ -89,7 +89,11 @@ async function getUserInfo(authCode:string) {
 
 }
 
-async function getUserTop(userID: string) {
+type Item = {
+	name: string,
+}
+
+async function getUserTop(userID: string): Promise<Array<Item>> {
 	const spotifyUserTopArtistsURI = 'https://api.spotify.com/v1/me/top/artists';
 	const token = await getUserToken(userID);
 	const fetchInput = {
@@ -101,7 +105,7 @@ async function getUserTop(userID: string) {
 
 	const res = await fetch(spotifyUserTopArtistsURI, fetchInput);
 	const userTopData = await res.json();
-	return userTopData;
+	return userTopData['items'];
 
 }
 
