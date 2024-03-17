@@ -11,14 +11,34 @@ export async function getUserToken(userID: string): Promise<string> {
 	const db = client.db('spotify_web_app');
 
 	const document = await db.collection('tokens').findOne({
-		expires: {$gt: new Date().toISOString()},
 		spotifyid: {$eq: userID},
-	});
+	}, {sort: {expires: -1}});
 
 	if (document !== null) {
-		return document['access_token'];
+		if (document['expires'] > new Date().toISOString()) {
+			return document['access_token'];
+		}
+		return refreshUserToken(document['refresh_token']);
 	}
+
 	return Promise.resolve('');
+}
+
+async function refreshUserToken(refreshToken: string): Promise<string> {
+	const url = 'https://accounts.spotify.com/api/token';
+
+	const fetchInput = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_API_CLIENTID}:${process.env.SPOTIFY_API_SECRET}`).toString('base64'),
+		},
+		body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+	};
+	const body = await fetch(url, fetchInput);
+	const response = await body.json();
+
+	return response['access_token'];
 }
 
 async function getBearerToken(): Promise<string> {
