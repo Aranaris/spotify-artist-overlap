@@ -72,7 +72,7 @@ async function getBearerToken(): Promise<string> {
 	}
 
 	// if no valid token, get a new one from spotify and store in MongoDB
-	const tokenEndpointURI = 'https://accounts.spotify.com/api/token';
+	const tokenEndpointURL = 'https://accounts.spotify.com/api/token';
 	const fetchInput = {
 		method: 'POST',
 		headers: {
@@ -81,7 +81,7 @@ async function getBearerToken(): Promise<string> {
 		body: `grant_type=client_credentials&client_id=${process.env.SPOTIFY_API_CLIENTID}&client_secret=${process.env.SPOTIFY_API_SECRET}`,
 	};
 
-	const res = await fetch(tokenEndpointURI, fetchInput);
+	const res = await fetch(tokenEndpointURL, fetchInput);
 	const authData = await res.json();
 	const currentDate = new Date();
 	const expireDate = setExpiration(currentDate, authData['expires_in']);
@@ -94,7 +94,7 @@ async function getBearerToken(): Promise<string> {
 
 async function getNewTokenFromSpotify(authCode:string): Promise<any> {
 	const redirectURI = 'http://localhost:3000/api/callback/';
-	const tokenEndpointURI = 'https://accounts.spotify.com/api/token';
+	const tokenEndpointURL = 'https://accounts.spotify.com/api/token';
 	const fetchInput = {
 		method: 'POST',
 		headers: {
@@ -104,20 +104,26 @@ async function getNewTokenFromSpotify(authCode:string): Promise<any> {
 		body: `grant_type=authorization_code&code=${authCode}&redirect_uri=${encodeURIComponent(redirectURI)}`,
 	};
 
-	const res = await fetch(tokenEndpointURI, fetchInput);
+	const res = await fetch(tokenEndpointURL, fetchInput);
 	const authData = await res.json();
 	return authData;
 }
 
-type User = {
+type Image = {
+	url: string,
+	height: number,
+	width: number,
+}
+
+export type User = {
 	display_name: string,
 	href: string,
-	images: Array<any>,
+	images: Array<Image>,
 	id: string,
 }
 
 async function getUserInfo(authCode:string): Promise<User> {
-	const spotifyUserEndpointURI = 'https://api.spotify.com/v1/me';
+	const spotifyUserEndpointURL = 'https://api.spotify.com/v1/me';
 	const fetchInput = {
 		method: 'GET',
 		headers: {
@@ -125,7 +131,7 @@ async function getUserInfo(authCode:string): Promise<User> {
 		},
 	};
 
-	const res = await fetch(spotifyUserEndpointURI, fetchInput);
+	const res = await fetch(spotifyUserEndpointURL, fetchInput);
 	const {id, href, images, display_name, error} = await res.json();
 
 	if (error) {
@@ -147,12 +153,15 @@ async function getUserInfo(authCode:string): Promise<User> {
 	return userData;
 }
 
-type Item = {
+export type Artist = {
 	name: string,
+	id: string,
+	images: Array<Image>,
 }
 
-async function getUserTop(userID: string): Promise<Array<Item>> {
-	const spotifyUserTopArtistsURI = 'https://api.spotify.com/v1/me/top/artists';
+async function getUserTop(userID: string): Promise<Array<Artist>> {
+
+	const spotifyUserTopArtistsURL = 'https://api.spotify.com/v1/me/top/artists';
 	const token = await getUserToken(userID);
 	const fetchInput = {
 		method: 'GET',
@@ -161,10 +170,23 @@ async function getUserTop(userID: string): Promise<Array<Item>> {
 		},
 	};
 
-	const res = await fetch(spotifyUserTopArtistsURI, fetchInput);
+	const res = await fetch(spotifyUserTopArtistsURL, fetchInput);
 	const userTopData = await res.json();
 	return userTopData['items'];
 
+}
+
+async function getRelatedArtists(artistID: string, accessToken: string): Promise<Array<Artist>> {
+	const spotifyRelatedArtistsURL = `https://api.spotify.com/v1/artists/${artistID}/related-artists`;
+	const fetchInput = {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + accessToken,
+		},
+	};
+
+	const res = await fetch(spotifyRelatedArtistsURL, fetchInput);
+	return await res.json();
 }
 
 export {
