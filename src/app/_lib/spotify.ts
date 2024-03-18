@@ -157,11 +157,12 @@ export type Artist = {
 	name: string,
 	id: string,
 	images: Array<Image>,
+	related_artists: Array<Artist>,
 }
 
 async function getUserTop(userID: string): Promise<Array<Artist>> {
 
-	const spotifyUserTopArtistsURL = 'https://api.spotify.com/v1/me/top/artists';
+	const spotifyUserTopArtistsURL = 'https://api.spotify.com/v1/me/top/artists?limit=10';
 	const token = await getUserToken(userID);
 	const fetchInput = {
 		method: 'GET',
@@ -172,7 +173,13 @@ async function getUserTop(userID: string): Promise<Array<Artist>> {
 
 	const res = await fetch(spotifyUserTopArtistsURL, fetchInput);
 	const userTopData = await res.json();
-	return userTopData['items'];
+	const artists = userTopData['items'];
+	for (const i in artists) {
+		const related_artists = await getRelatedArtists(artists[i]['id'], token);
+
+		artists[i]['related_artists'] = related_artists;
+	}
+	return artists;
 
 }
 
@@ -186,7 +193,16 @@ async function getRelatedArtists(artistID: string, accessToken: string): Promise
 	};
 
 	const res = await fetch(spotifyRelatedArtistsURL, fetchInput);
-	return await res.json();
+	const artistData = await res.json();
+
+	const related_artists = artistData['artists'].map((data:any) => {
+		return {
+			id: data['id'],
+			name: data['name'],
+		};
+	});
+
+	return related_artists;
 }
 
 export {

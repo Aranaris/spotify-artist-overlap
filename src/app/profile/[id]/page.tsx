@@ -57,7 +57,15 @@ export default function Profile({params}: { params: { id: string } }) {
 			<button className={styles.button} onClick={handleGetUserTopArtists}>View My Top Artists</button>
 			<ol className={styles['artist-list']}>
 				{userTopArtists.map((data: Artist, index) =>
-					<li key={data['id']}><p>{index + 1}.</p><Image alt='artist image' className={styles.logo} src={data['images'][0]['url']} width={24} height={24}></Image>{data['name']}</li>,
+					<li key={data['id']}>
+						<p>{index + 1}.</p>
+						<Image alt='artist image' className={styles.logo} src={data['images'][0]['url']} width={24} height={24}></Image>
+						<p>{data['name']}</p>
+						<div className={styles['related-artist-list']}><p><em>Related Artists: </em></p>{data['related_artists'].map((artist) =>
+							<p key={data['id'] + artist['id']}>| {artist['name']} |</p>,
+						)}
+						</div>
+					</li>,
 				)}
 			</ol>
 

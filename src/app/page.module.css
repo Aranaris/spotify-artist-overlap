@@ -139,7 +139,18 @@
 .artist-list li {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 20px;
+}
+
+.related-artist-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+
+.related-artist-list p {
+	font-size: small;
+
 }
 
 /* Enable hover only on non-touch devices */
