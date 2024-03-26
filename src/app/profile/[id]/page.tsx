@@ -70,7 +70,19 @@ export default function Profile({params}: { params: { id: string } }) {
 				}
 			}
 		}
-		return tableData.filter((result) => result['count'] > 1);
+		return tableData.filter((result) => result['count'] > 1)
+			.sort((a,b) => {
+				if (a.count > b.count) {
+					return -1;
+				}
+				if (a.count < b.count) {
+					return 1;
+				}
+				if (a.name > b.name) {
+					return -1;
+				}
+				return 1;
+			});
 	}
 
 	return (

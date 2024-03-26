@@ -160,7 +160,7 @@ export type Artist = {
 	related_artists: Array<Artist>,
 }
 
-async function getUserTop(userID: string, type = 'artists', limit = '25', time_range = 'long_term'): Promise<Array<Artist>> {
+async function getUserTop(userID: string, type = 'artists', limit = '25', time_range = 'medium_term'): Promise<Array<Artist>> {
 
 	const apiData = {
 		limit,
