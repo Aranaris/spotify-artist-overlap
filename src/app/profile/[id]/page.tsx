@@ -16,7 +16,8 @@ export default function Profile({params}: { params: { id: string } }) {
 	});
 
 	const [sessionPayload, setSessionPayload] = useState({});
-	const [userTopArtists, setUserTopArtists] = useState([]);
+	const [userTopArtists, setUserTopArtists] = useState<Artist[]>([]);
+	const [tableData, setOverlapData] = useState<Array<OverlapAggregation>>([]);
 
 	useEffect(() => {
 		fetch(`/api/mongodb/user/${currentUser}`)
@@ -34,16 +35,47 @@ export default function Profile({params}: { params: { id: string } }) {
 			fetch('/api/spotify/top')
 				.then((res) => {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
-				}).then(setUserTopArtists);
+				}).then((data) => {
+					setUserTopArtists(data);
+					setOverlapData(calculateOverlapData(data));
+				});
+
 		} catch(err: any) {
 			console.log(err.message);
 		}
 	}
 
+	type OverlapAggregation = {
+		id: string,
+		name: string,
+		count: number,
+		related: Array<string>,
+	}
+
+	function calculateOverlapData(data: Array<Artist>): Array<OverlapAggregation> {
+		const tableData = [];
+		for (const artist of data) {
+			for (const related_artist of artist['related_artists']) {
+				const dataIndex = tableData.findIndex(x => x.id === related_artist['id']);
+				if (dataIndex === -1) {
+					tableData.push({
+						id: related_artist['id'],
+						name: related_artist['name'],
+						count: 1,
+						related: [artist['name']],
+					});
+				} else {
+					tableData[dataIndex]['count']++;
+					tableData[dataIndex]['related'].push(artist['name']);
+				}
+			}
+		}
+		return tableData.filter((result) => result['count'] > 1);
+	}
 
 	return (
 		<section className={styles.main}>
-			{ userInfo['display_name'] !== '' &&
+			{userInfo['display_name'] !== '' &&
 			<div className={styles.center}>
 				<Image alt='user profile' className={styles.logo} src={userInfo['image_url']} width={24} height={24}></Image>
 				<h2>{userInfo['display_name']}</h2>
@@ -69,6 +101,22 @@ export default function Profile({params}: { params: { id: string } }) {
 				)}
 			</ol>
 
+			<div className={styles.center}>
+				<h2>Related Artist List</h2>
+			</div>
+			<ol className={styles['artist-list']}>
+				{tableData.length > 0 && tableData.map((data, index) =>
+					<li key={data['id']}>
+						<p>{index + 1}.</p>
+						<p>{data['name']}</p>
+						<p>{data['count']}</p>
+						<div className={styles['related-artist-list']}><p><em>Related Artists: </em></p>{data['related'].map((artist) =>
+							<p key={data['id'] + artist}>| {artist} |</p>,
+						)}
+						</div>
+					</li>,
+				)}
+			</ol>
 			<button className={styles.button} onClick={handleGetSessionPayload}>Show Session Payload</button>
 			<p>{JSON.stringify(sessionPayload)}</p>
 			<Link href='/' className={styles.card}>Back to Home</Link>
