@@ -12,7 +12,25 @@
   font-size: 0.9rem;
 	text-align: center;
   text-wrap: balance;
-	max-width: 80%;
+}
+
+.nav {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	justify-content: space-between;
+	padding: 20px;
+}
+
+.navlinks {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	justify-content: space-evenly;
+}
+
+.navlinks a:hover {
+	text-decoration: underline;
 }
 
 .description {
@@ -63,25 +81,28 @@
   transition: transform 200ms;
 }
 
-.center h2 {
-  font-weight: 600;
-	padding: 0 .9rem;
+.center h2, .profile-header h2 {
+  font-weight: 500;
+	padding: 1rem .9rem;
 }
 
-.card p {
+.card p, .center p, .profile-header p {
   margin: 0;
   opacity: 0.6;
   font-size: 0.9rem;
   line-height: 1.5;
-  max-width: 30ch;
   text-wrap: balance;
 }
 
-.center {
+.center, .profile-header {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+.center {
+	flex-direction: column;
 }
 
 .center::before,
@@ -95,12 +116,15 @@
 
 .logo {
   position: relative;
+	display: flex;
+	gap: 10px;
 }
 
 .spotify-login {
-	background-color: #169c46;
+	background-color: #1DB954;
 	display: flex;
-	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
 	align-items: center;
 }
 
@@ -113,19 +137,23 @@
 }
 
 .button:hover, .spotify-login:hover {
-  transform: scale(1.2);
+  transform: scale(1.05);
 }
 
 .button, .spotify-login {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  font-size: .9em;
+  font-weight: 600;
+	color: #191414;
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
-  margin: 0 auto;
+}
+
+.button {
+	margin: 0 auto;
 }
 
 .info-list, .artist-list {

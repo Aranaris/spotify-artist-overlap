@@ -88,7 +88,7 @@ export default function Profile({params}: { params: { id: string } }) {
 	return (
 		<section className={styles.main}>
 			{userInfo['display_name'] !== '' &&
-			<div className={styles.center}>
+			<div className={styles['profile-header']}>
 				<Image alt='user profile' className={styles.logo} src={userInfo['image_url']} width={24} height={24}></Image>
 				<h2>{userInfo['display_name']}</h2>
 			</div>
