@@ -1,7 +1,6 @@
 'use client';
-import styles from './page.module.css';
-import Link from 'next/link';
 
+import styles from './page.module.css';
 
 export default function Home() {
 	return (
@@ -14,11 +13,6 @@ export default function Home() {
 				<h2>Discover Music</h2>
 				<p>Explore the Spotify music library and find new favorites with tailored recommendations based on your listening history</p>
 			</div>
-			<div className={styles.description}>
-				<p>Additional Resources:</p>
-				<Link href='https://github.com/Aranaris/spotify-artist-overlap'>Github Repo</Link>
-			</div>
-
 		</main>
 
 	);

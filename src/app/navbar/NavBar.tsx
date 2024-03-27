@@ -6,7 +6,7 @@ import Image from 'next/image';
 import {setStateCookie} from '../actions';
 import {useRouter} from 'next/navigation';
 
-export default function NavBar () {
+export default function NavBar() {
 	const router = useRouter();
 	async function handleSpotifyClick() {
 		await setStateCookie();
