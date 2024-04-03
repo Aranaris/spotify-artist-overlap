@@ -36,7 +36,7 @@
 .description {
   display: inherit;
   justify-content: end;
-  align-items: inherit;
+  align-items: start;
   font-size: 0.85rem;
   max-width: var(--max-width);
   width: 100%;
@@ -49,12 +49,7 @@
 }
 
 .description p {
-  position: relative;
-	margin: 10px; 
-  padding: 1rem;
-  background-color: rgba(var(--callout-rgb), 0.5);
-  border: 1px solid rgba(var(--callout-border-rgb), 0.3);
-  border-radius: var(--border-radius);
+	margin: 20px; 
 }
 
 .code {

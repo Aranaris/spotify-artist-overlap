@@ -8,6 +8,7 @@ import {useRouter} from 'next/navigation';
 
 export default function NavBar() {
 	const router = useRouter();
+
 	async function handleSpotifyClick() {
 		await setStateCookie();
 		router.push('/api/spotify/login');
