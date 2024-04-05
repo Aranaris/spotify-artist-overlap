@@ -155,7 +155,7 @@ async function getUserInfo(authCode:string): Promise<User> {
 
 export type Artist = {
 	name: string,
-	id: string,
+	artist_id: string,
 	images: Array<Image>,
 	related_artists: Array<Artist>,
 }
@@ -221,7 +221,7 @@ async function getRelatedArtists(artistID: string, accessToken: string): Promise
 
 	const related_artists = artistData['artists'].map((data:any) => {
 		return {
-			id: data['id'],
+			artist_id: data['id'],
 			name: data['name'],
 		};
 	});

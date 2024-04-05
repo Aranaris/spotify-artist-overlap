@@ -56,10 +56,10 @@ export default function Profile({params}: { params: { id: string } }) {
 		const tableData = [];
 		for (const artist of data) {
 			for (const related_artist of artist['related_artists']) {
-				const dataIndex = tableData.findIndex(x => x.id === related_artist['id']);
+				const dataIndex = tableData.findIndex(x => x.id === related_artist['artist_id']);
 				if (dataIndex === -1) {
 					tableData.push({
-						id: related_artist['id'],
+						id: related_artist['artist_id'],
 						name: related_artist['name'],
 						count: 1,
 						related: [artist['name']],
@@ -101,12 +101,12 @@ export default function Profile({params}: { params: { id: string } }) {
 			<button className={styles.button} onClick={handleGetUserTopArtists}>View My Top Artists</button>
 			<ol className={styles['artist-list']}>
 				{userTopArtists.map((data: Artist, index) =>
-					<li key={data['id']}>
+					<li key={data['artist_id']}>
 						<p>{index + 1}.</p>
 						<Image alt='artist image' className={styles.logo} src={data['images'][0]['url']} width={24} height={24}></Image>
 						<p>{data['name']}</p>
 						<div className={styles['related-artist-list']}><p><em>Related Artists: </em></p>{data['related_artists'].map((artist) =>
-							<p key={data['id'] + artist['id']}>| {artist['name']} |</p>,
+							<p key={data['artist_id'] + artist['artist_id']}>| {artist['name']} |</p>,
 						)}
 						</div>
 					</li>,
