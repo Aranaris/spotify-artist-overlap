@@ -191,6 +191,23 @@ async function getUserTop(userID: string, type = 'artists', limit = '25', time_r
 }
 
 async function getRelatedArtists(artistID: string, accessToken: string): Promise<Array<Artist>> {
+
+	const client = await clientPromise;
+	const db = client.db('spotify_web_app');
+
+	// check to see if artist data is already stored
+
+	const artist = await db.collection('artists').findOne({
+		artist_id: {$eq: artistID},
+	});
+
+	if (artist !== null) {
+		if ('related_artists' in artist) {
+			console.log('retrieved data from mongodb');
+			return artist['related_artists'];
+		}
+	}
+
 	const spotifyRelatedArtistsURL = `https://api.spotify.com/v1/artists/${artistID}/related-artists`;
 	const fetchInput = {
 		method: 'GET',
@@ -209,6 +226,14 @@ async function getRelatedArtists(artistID: string, accessToken: string): Promise
 		};
 	});
 
+	await db.collection('artists').updateOne(
+		{artist_id: {$eq: artistID}},
+		{$set: {
+			related_artists,
+			updated: new Date().toISOString(),
+		}},
+		{upsert:true});
+
 	return related_artists;
 }
 
@@ -217,4 +242,5 @@ export {
 	getNewTokenFromSpotify,
 	getUserInfo,
 	getUserTop,
+	getRelatedArtists,
 };

@@ -11,6 +11,8 @@ async function run() {
 		.collection('tokens').deleteMany({});
 	await testClient.db('spotify_web_app')
 		.collection('users').deleteMany({});
+	await testClient.db('spotify_web_app')
+		.collection('artists').deleteMany({});
 	await testClient.close();
 }
 

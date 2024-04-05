@@ -2,7 +2,6 @@
 
 import {useState} from 'react';
 import styles from '../page.module.css';
-import Image from 'next/image';
 import {Artist} from '@/app/_lib/spotify';
 
 export default function Explore() {
@@ -10,14 +9,20 @@ export default function Explore() {
 	const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
 	const [overlapData, setOverlapData] = useState<Array<OverlapAggregation>>([]);
 
-	function handleGetUserTopArtists() {
+	function handleGetRelatedArtists() {
 		try {
-			fetch('/api/spotify/top')
+			fetch('/api/spotify/related-artists', {
+				method:'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({artistid: '45eNHdiiabvmbp4erw26rg'}),
+			})
 				.then((res) => {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
 				}).then((data) => {
 					setRelatedArtists(data);
-					setOverlapData(calculateOverlapData(data));
+					// setOverlapData(calculateOverlapData(data));
 				});
 
 		} catch(err: any) {
@@ -50,7 +55,7 @@ export default function Explore() {
 				}
 			}
 		}
-		return tableData.filter((result) => result['count'] > 1)
+		return tableData.filter((result) => result['count'] > 0)
 			.sort((a,b) => {
 				if (a.count > b.count) {
 					return -1;
@@ -67,12 +72,11 @@ export default function Explore() {
 
 	return (
 		<section className={styles.main}>
-			<button className={styles.button} onClick={handleGetUserTopArtists}>View My Top Artists</button>
+			<button className={styles.button} onClick={handleGetRelatedArtists}>View Related Artists</button>
 			<ol className={styles['artist-list']}>
 				{relatedArtists.map((data: Artist, index) =>
 					<li key={data['id']}>
-						<p>{index + 1}.</p>
-						<Image alt='artist image' className={styles.logo} src={data['images'][0]['url']} width={24} height={24}></Image>
+						<p>{data['id']}</p>
 						<p>{data['name']}</p>
 					</li>,
 				)}
