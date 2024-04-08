@@ -120,6 +120,9 @@ export type User = {
 	href: string,
 	images: Array<Image>,
 	id: string,
+	followers: {
+		total: number,
+	}
 }
 
 async function getUserInfo(authCode:string): Promise<User> {
@@ -132,7 +135,7 @@ async function getUserInfo(authCode:string): Promise<User> {
 	};
 
 	const res = await fetch(spotifyUserEndpointURL, fetchInput);
-	const {id, href, images, display_name, error} = await res.json();
+	const {id, href, images, followers, display_name, error} = await res.json();
 
 	if (error) {
 		throw new Error(error.message);
@@ -142,6 +145,7 @@ async function getUserInfo(authCode:string): Promise<User> {
 		id,
 		href,
 		images,
+		followers,
 		display_name,
 	};
 

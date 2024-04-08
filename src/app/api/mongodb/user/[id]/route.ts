@@ -19,6 +19,8 @@ export async function GET(
 			display_name: user['display_name'],
 			link: user['href'],
 			image_url: user['images'][0]['url'],
+			id: user['id'],
+			followers: user['followers']['total'],
 		});
 	}
 
