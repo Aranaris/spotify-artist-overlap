@@ -17,7 +17,6 @@ export default function Profile({params}: { params: { id: string } }) {
 		followers: 0,
 	});
 
-	const [sessionPayload, setSessionPayload] = useState({});
 	const [userTopArtists, setUserTopArtists] = useState<Artist[]>([]);
 	const [overlapData, setOverlapData] = useState<Array<OverlapAggregation>>([]);
 
@@ -26,11 +25,6 @@ export default function Profile({params}: { params: { id: string } }) {
 			.then((res) => res.json())
 			.then(setUserInfo);
 	}, [currentUser]);
-
-	function handleGetSessionPayload() {
-		fetch('/api/spotify/auth')
-			.then(res => res.json()).then(setSessionPayload);
-	}
 
 	function handleGetUserTopArtists() {
 		try {
@@ -131,9 +125,6 @@ export default function Profile({params}: { params: { id: string } }) {
 					</li>,
 				)}
 			</ol>
-			<button className={styles.button} onClick={handleGetSessionPayload}>Show Session Payload</button>
-			<p>{JSON.stringify(sessionPayload)}</p>
-			<Link href='/' className={styles.card}>Back to Home</Link>
 		</section>
 	);
 }
