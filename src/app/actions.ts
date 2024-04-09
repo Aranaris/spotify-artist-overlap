@@ -7,3 +7,7 @@ export async function setStateCookie() {
 	const state = nanoid(16);
 	cookies().set('state', state);
 }
+
+export async function clearSessionCookie() {
+	cookies().delete('session');
+}

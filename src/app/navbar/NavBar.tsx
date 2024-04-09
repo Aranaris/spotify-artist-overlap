@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styles from '../page.module.css';
 import Image from 'next/image';
-import {setStateCookie} from '../actions';
+import {clearSessionCookie, setStateCookie} from '../actions';
 import {useRouter} from 'next/navigation';
 import {Menu} from '@headlessui/react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -15,6 +15,10 @@ export default function NavBar(props: {session: any}) {
 	async function handleSpotifyClick() {
 		await setStateCookie();
 		router.push('/api/spotify/login');
+	}
+
+	async function handleLogOutClick() {
+		await clearSessionCookie();
 	}
 	return (
 		<nav className={styles.nav}>
@@ -41,7 +45,7 @@ export default function NavBar(props: {session: any}) {
 								<Link href='/profile'>My Profile</Link>
 							</Menu.Item>
 							<Menu.Item>
-								<Link href='/'>Log Out</Link>
+								<Link href='/' onClick={handleLogOutClick}>Log Out</Link>
 							</Menu.Item>
 						</Menu.Items>
 					</Menu>
