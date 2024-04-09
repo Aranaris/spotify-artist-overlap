@@ -174,6 +174,7 @@ async function getUserTop(userID: string, type = 'artists', limit = '25', time_r
 	const apiSearchParams = new URLSearchParams(apiData);
 
 	const spotifyUserTopArtistsURL = `https://api.spotify.com/v1/me/top/${type}?${apiSearchParams.toString()}`;
+
 	const token = await getUserToken(userID);
 	const fetchInput = {
 		method: 'GET',

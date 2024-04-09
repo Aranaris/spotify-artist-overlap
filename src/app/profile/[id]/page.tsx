@@ -27,7 +27,12 @@ export default function Profile({params}: { params: { id: string } }) {
 
 	function handleGetUserTopArtists() {
 		try {
-			fetch('/api/spotify/top')
+			fetch('/api/spotify/top?' + new URLSearchParams(
+				{
+					type: 'artists',
+					limit: '10',
+					time_range: 'medium_term',
+				}))
 				.then((res) => {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
 				}).then((data) => {

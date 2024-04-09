@@ -21,7 +21,6 @@ export async function GET(request: Request) {
 	const artistID = '45eNHdiiabvmbp4erw26rg';
 	const artistURL = `https://api.spotify.com/v1/artists/${artistID}`;
 	const artistData = await getSpotifyData(artistURL, access_token);
-	console.log(artistData);
 
 	const relatedArtistsURL = `https://api.spotify.com/v1/artists/${artistID}/related-artists`;
 	const relatedArtistsData = await getSpotifyData(relatedArtistsURL, access_token);
