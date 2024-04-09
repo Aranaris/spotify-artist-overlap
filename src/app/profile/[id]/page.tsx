@@ -2,7 +2,6 @@
 
 import {useEffect, useState} from 'react';
 import styles from '../../page.module.css';
-import Link from 'next/link';
 import Image from 'next/image';
 import {Artist} from '@/app/_lib/spotify';
 
