@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {FormEvent, useEffect, useState} from 'react';
 import styles from '../../page.module.css';
 import Image from 'next/image';
 import {Artist} from '@/app/_lib/spotify';
@@ -25,14 +25,17 @@ export default function Profile({params}: { params: { id: string } }) {
 			.then(setUserInfo);
 	}, [currentUser]);
 
-	function handleGetUserTopArtists() {
+	function handleGetUserTopArtists(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		const rawFormData = {
+			type: formData.get('type') as string,
+			limit: formData.get('limit') as string,
+			time_range: formData.get('time_range') as string,
+		};
+
 		try {
-			fetch('/api/spotify/top?' + new URLSearchParams(
-				{
-					type: 'artists',
-					limit: '10',
-					time_range: 'medium_term',
-				}))
+			fetch('/api/spotify/top?' + new URLSearchParams(rawFormData))
 				.then((res) => {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
 				}).then((data) => {
@@ -98,7 +101,28 @@ export default function Profile({params}: { params: { id: string } }) {
 			</div>
 			}
 
-			<button className={styles.button} onClick={handleGetUserTopArtists}>View My Top Artists</button>
+			<form onSubmit={handleGetUserTopArtists} className={styles['form-submit']}>
+				<label>
+					Type:
+					<select name='type'>
+						<option value='artists'>Artists</option>
+						<option value='tracks'>Songs</option>
+					</select>
+				</label>
+				<label>
+					Limit:
+					<input type='number' name='limit' defaultValue='10' min={1} max={50}></input>
+				</label>
+				<label>
+					Time Range:
+					<select name='time_range'>
+						<option value='short_term'>Last Month</option>
+						<option value='medium_term'>Last 6 Months</option>
+						<option value='long_term'>All Time</option>
+					</select>
+				</label>
+				<button type="submit" className={styles.button}>Submit</button>
+			</form>
 			<ol className={styles['artist-list']}>
 				{userTopArtists.map((data: Artist, index) =>
 					<li key={data['artist_id']}>

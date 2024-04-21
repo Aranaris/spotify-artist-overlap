@@ -1,11 +1,11 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: start;
   align-items: center;
   padding: 2rem;
   min-height: 100vh;
-	gap: 10px;
+	gap: 30px;
 }
 
 .main p {
@@ -94,6 +94,8 @@
 
 .center {
 	flex-direction: column;
+	gap: 2rem;
+	padding: 2rem;
 }
 
 .center::before,
@@ -166,6 +168,17 @@
 
 .button {
 	margin: 0 auto;
+}
+
+.form-submit {
+	display: flex;
+	gap: 20px;
+	padding: 10px;
+	align-items: center;
+}
+
+.form-submit select, .form-submit input{
+	margin-left: 10px;
 }
 
 .info-list, .artist-list {
