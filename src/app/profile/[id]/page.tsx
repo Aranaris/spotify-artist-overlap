@@ -29,7 +29,8 @@ export default function Profile({params}: { params: { id: string } }) {
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const rawFormData = {
-			type: formData.get('type') as string,
+			// type: formData.get('type') as string,
+			type: 'artists',
 			limit: formData.get('limit') as string,
 			time_range: formData.get('time_range') as string,
 		};
@@ -102,17 +103,13 @@ export default function Profile({params}: { params: { id: string } }) {
 			}
 
 			<form onSubmit={handleGetUserTopArtists} className={styles['form-submit']}>
-				<label>
+				{/* <label>
 					Type:
 					<select name='type'>
 						<option value='artists'>Artists</option>
 						<option value='tracks'>Songs</option>
 					</select>
-				</label>
-				<label>
-					Limit:
-					<input type='number' name='limit' defaultValue='10' min={1} max={50}></input>
-				</label>
+				</label> */}
 				<label>
 					Time Range:
 					<select name='time_range'>
@@ -120,6 +117,10 @@ export default function Profile({params}: { params: { id: string } }) {
 						<option value='medium_term'>Last 6 Months</option>
 						<option value='long_term'>All Time</option>
 					</select>
+				</label>
+				<label>
+					Limit:
+					<input type='number' name='limit' defaultValue='10' min={1} max={50}></input>
 				</label>
 				<button type="submit" className={styles.button}>Submit</button>
 			</form>

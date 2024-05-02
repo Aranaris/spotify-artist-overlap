@@ -147,27 +147,26 @@
 }
 
 .button {
-	background-color: #1182B8;
+	background-color: #1DB954;
 }
 
 .button:hover, .spotify-login:hover {
   transform: scale(1.05);
 }
 
-.button, .spotify-login {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em;
+.button, .spotify-login, .form-submit select, .form-submit input{
   font-size: .9em;
-  font-weight: 600;
-	color: #191414;
   font-family: inherit;
-  cursor: pointer;
-  transition: border-color 0.25s;
 }
 
-.button {
-	margin: 0 auto;
+.button, .spotify-login {
+	padding: 0.4em 0.8em;
+	border-radius: 8px;
+	cursor: pointer;
+  border: 1px solid transparent;
+	transition: border-color 0.25s;
+	color: #191414;
+	font-weight: 600;
 }
 
 .form-submit {
@@ -177,9 +176,14 @@
 	align-items: center;
 }
 
-.form-submit select, .form-submit input{
-	margin-left: 10px;
+.form-submit label {
+	display: flex;
+	gap: 15px;
+	align-items: center;
 }
+/* .form-submit select, .form-submit input{
+	margin-left: 10px;
+} */
 
 .info-list, .artist-list {
 	list-style-type: none;

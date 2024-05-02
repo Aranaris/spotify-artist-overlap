@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {FormEvent, useState} from 'react';
 import styles from '../page.module.css';
 import {Artist} from '@/app/_lib/spotify';
 
@@ -8,7 +8,8 @@ export default function Explore() {
 
 	const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
 
-	function handleGetRelatedArtists() {
+	function handleGetRelatedArtists(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
 		try {
 			fetch('/api/spotify/related-artists', {
 				method:'POST',
@@ -30,9 +31,15 @@ export default function Explore() {
 
 	return (
 		<section className={styles.main}>
-			<button className={styles.button} onClick={handleGetRelatedArtists}>View Related Artists</button>
+			<form onSubmit={handleGetRelatedArtists} className={styles['form-submit']}>
+				<label>
+					See Related Artists for:
+					<input type='text' name='artist' defaultValue='Illenium'></input>
+				</label>
+				<button type='submit' className={styles.button}>Search</button>
+			</form>
 			<div className={styles.center}>
-				<h2>Related Artist List</h2>
+				<h2>Related Artists:</h2>
 			</div>
 			<ol className={styles['artist-list']}>
 				{relatedArtists.map((data: Artist, index) =>
