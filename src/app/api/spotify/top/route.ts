@@ -22,6 +22,8 @@ export async function GET(request: NextRequest) {
 		time_range!==null?time_range:undefined);
 	if (topData === undefined || topData.length === 0) {
 		throw new Error('no items retrieved');
+	} else if (topData.length < Number(limit)){
+		console.log(`Only ${topData.length} artists retrieved`);
 	}
 
 	return Response.json(topData);

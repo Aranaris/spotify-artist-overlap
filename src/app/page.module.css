@@ -77,6 +77,11 @@
 	padding: 1rem .9rem;
 }
 
+.section-header h2 {
+  font-weight: 500;
+	padding: .25rem .5rem;
+}
+
 .card p, .center p, .profile-header p, .spotify-disclaimer p {
   margin: 0;
   opacity: 0.6;

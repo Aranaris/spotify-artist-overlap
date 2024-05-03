@@ -188,7 +188,6 @@ async function getUserTop(userID: string, type = 'artists', limit = '25', time_r
 	const artists = userTopData['items'];
 	for (const i in artists) {
 		const related_artists = await getRelatedArtists(artists[i]['id'], token);
-
 		artists[i]['related_artists'] = related_artists;
 	}
 	return artists;

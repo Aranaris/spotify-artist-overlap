@@ -101,7 +101,9 @@ export default function Profile({params}: { params: { id: string } }) {
 				</ul>
 			</div>
 			}
-
+			<div className={styles['section-header']}>
+				<h2>Top Artists</h2>
+			</div>
 			<form onSubmit={handleGetUserTopArtists} className={styles['form-submit']}>
 				{/* <label>
 					Type:
@@ -122,7 +124,7 @@ export default function Profile({params}: { params: { id: string } }) {
 					Limit:
 					<input type='number' name='limit' defaultValue='10' min={1} max={50}></input>
 				</label>
-				<button type="submit" className={styles.button}>Submit</button>
+				<button type="submit" className={styles.button}>View</button>
 			</form>
 			<ol className={styles['artist-list']}>
 				{userTopArtists.map((data: Artist, index) =>
