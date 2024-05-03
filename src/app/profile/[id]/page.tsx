@@ -41,7 +41,7 @@ export default function Profile({params}: { params: { id: string } }) {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
 				}).then((data) => {
 					setUserTopArtists(data);
-					setOverlapData(calculateOverlapData(data));
+					// setOverlapData(calculateOverlapData(data));
 				});
 
 		} catch(err: any) {
@@ -132,14 +132,14 @@ export default function Profile({params}: { params: { id: string } }) {
 						<p>{index + 1}.</p>
 						<Image alt='artist image' className={styles.logo} src={data['images'][0]['url']} width={24} height={24}></Image>
 						<p>{data['name']}</p>
-						<div className={styles['related-artist-list']}><p><em>Related Artists: </em></p>{data['related_artists'].map((artist) =>
+						{/* <div className={styles['related-artist-list']}><p><em>Related Artists: </em></p>{data['related_artists'].map((artist) =>
 							<p key={data['artist_id'] + artist['artist_id']}>| {artist['name']} |</p>,
 						)}
-						</div>
+						</div> */}
 					</li>,
 				)}
 			</ol>
-
+			{/*
 			<div className={styles.center}>
 				<h2>Related Artist List</h2>
 			</div>
@@ -155,7 +155,7 @@ export default function Profile({params}: { params: { id: string } }) {
 						</div>
 					</li>,
 				)}
-			</ol>
+			</ol> */}
 		</section>
 	);
 }

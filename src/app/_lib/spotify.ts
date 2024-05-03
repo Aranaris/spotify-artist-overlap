@@ -186,12 +186,34 @@ async function getUserTop(userID: string, type = 'artists', limit = '25', time_r
 	const res = await fetch(spotifyUserTopArtistsURL, fetchInput);
 	const userTopData = await res.json();
 	const artists = userTopData['items'];
-	for (const i in artists) {
-		const related_artists = await getRelatedArtists(artists[i]['id'], token);
-		artists[i]['related_artists'] = related_artists;
-	}
+	await updateArtists(userID, artists);
+
+	// for (const i in artists) {
+	// 	const related_artists = await getRelatedArtists(artists[i]['id'], token);
+	// 	artists[i]['related_artists'] = related_artists;
+	// }
 	return artists;
 
+}
+
+async function updateArtists(userID: string, artists:Array<any>) {
+	const client = await clientPromise;
+	const db = client.db('spotify_web_app');
+
+	// check to see if artist data is already stored
+
+	for (const i in artists) {
+		const artistID = artists[i]['id'];
+		await db.collection('artists').updateOne(
+			{artist_id: {$eq: artistID}},
+			{$set: {
+				artist_id: artistID,
+				name: artists[i]['name'],
+				popularity: artists[i]['popularity'],
+				updated: new Date().toISOString(),
+			}},
+			{upsert:true});
+	}
 }
 
 async function getRelatedArtists(artistID: string, accessToken: string): Promise<Array<Artist>> {
