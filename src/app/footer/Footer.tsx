@@ -9,7 +9,7 @@ export default function Footer() {
 			</div>
 			<div className={styles.description}>
 				<ul className={styles['info-list']}>
-					<li><Link href='https://github.com/Aranaris/spotify-artist-overlap'>Github Repository</Link></li>
+					<li><Link href='https://github.com/Aranaris/spotify-artist-overlap'>Github Source Code</Link></li>
 					<li><Link href='https://developer.spotify.com/documentation/web-api'>Spotify API Documentation</Link></li>
 				</ul>
 			</div>

@@ -172,7 +172,6 @@
 .form-submit {
 	display: flex;
 	gap: 20px;
-	padding: 10px;
 	align-items: center;
 }
 
@@ -181,9 +180,16 @@
 	gap: 15px;
 	align-items: center;
 }
-/* .form-submit select, .form-submit input{
-	margin-left: 10px;
-} */
+
+.form-submit select, .form-submit input{
+	width: auto;
+  font-weight: 400;
+  line-height: normal;
+	border: none;
+  border-radius: 4px;
+	padding: 0.25rem;
+	position: relative;
+}
 
 .info-list, .artist-list {
 	list-style-type: none;
