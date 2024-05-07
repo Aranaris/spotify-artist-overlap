@@ -188,10 +188,6 @@ async function getUserTop(userID: string, type = 'artists', limit = '25', time_r
 	const artists = userTopData['items'];
 	await updateArtists(userID, artists);
 
-	// for (const i in artists) {
-	// 	const related_artists = await getRelatedArtists(artists[i]['id'], token);
-	// 	artists[i]['related_artists'] = related_artists;
-	// }
 	return artists;
 
 }
@@ -204,19 +200,27 @@ async function updateArtists(userID: string, artists:Array<any>) {
 
 	for (const i in artists) {
 		const artistID = artists[i]['id'];
-		await db.collection('artists').updateOne(
-			{artist_id: {$eq: artistID}},
-			{$set: {
-				artist_id: artistID,
-				name: artists[i]['name'],
-				popularity: artists[i]['popularity'],
-				updated: new Date().toISOString(),
-			}},
-			{upsert:true});
+
+		const artist = await db.collection('artists').findOne({
+			artist_id: {$eq: artistID},
+		});
+
+		if (artist === null) {
+			const related_artists = await getRelatedArtists(artistID, userID);
+			await db.collection('artists').updateOne(
+				{artist_id: {$eq: artistID}},
+				{$set: {
+					artist_id: artistID,
+					name: artists[i]['name'],
+					popularity: artists[i]['popularity'],
+					updated: new Date().toISOString(),
+					related_artists,
+				}});
+		}
 	}
 }
 
-async function getRelatedArtists(artistID: string, accessToken: string): Promise<Array<Artist>> {
+async function getRelatedArtists(artistID: string, userID: string): Promise<Array<Artist>> {
 
 	const client = await clientPromise;
 	const db = client.db('spotify_web_app');
@@ -234,6 +238,7 @@ async function getRelatedArtists(artistID: string, accessToken: string): Promise
 		}
 	}
 
+	const accessToken = await getUserToken(userID);
 	const spotifyRelatedArtistsURL = `https://api.spotify.com/v1/artists/${artistID}/related-artists`;
 	const fetchInput = {
 		method: 'GET',
