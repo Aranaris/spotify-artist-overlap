@@ -8,15 +8,19 @@ export default function Explore() {
 
 	const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
 
-	function handleGetRelatedArtists(event: FormEvent<HTMLFormElement>) {
+	async function handleGetRelatedArtists(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
+
+		const data = new FormData(event.currentTarget);
+		const artistName = data.get('artistname') as string;
+
 		try {
-			fetch('/api/spotify/related-artists', {
+			await fetch('/api/spotify/related-artists', {
 				method:'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({artistName: 'illeNium'}),
+				body: JSON.stringify({artistname: artistName}),
 			})
 				.then((res) => {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
@@ -34,7 +38,7 @@ export default function Explore() {
 			<form onSubmit={handleGetRelatedArtists} className={styles['form-submit']}>
 				<label>
 					See Related Artists for:
-					<input type='text' name='artist' defaultValue='Illenium'></input>
+					<input type='text' name='artistname' defaultValue='Illenium'></input>
 				</label>
 				<button type='submit' className={styles.button}>Search</button>
 			</form>

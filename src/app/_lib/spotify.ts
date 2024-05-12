@@ -226,9 +226,7 @@ async function getRelatedArtists(artistName: string, userID: string): Promise<Ar
 	const db = client.db('spotify_web_app');
 
 	//search artist by name
-	const indexes = await db.collection('artists').indexes();
-	console.log(indexes);
-	const search = await db.collection('artists').find( { $text: { $search: artistName }}).toArray();
+	const search = await db.collection('artists').find( {$text: {$search: artistName}}).toArray();
 	const artist = search[0];
 
 	// check to see if artist data is already stored
