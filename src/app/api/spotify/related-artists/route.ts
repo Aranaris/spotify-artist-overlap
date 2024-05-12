@@ -12,8 +12,8 @@ export async function POST(request: NextRequest) {
 
 	try {
 		const requestData = await request.json();
-		const artistID = requestData['artistid'];
-		const relatedArtists = await getRelatedArtists(artistID, parsed['spotifyid']);
+		const artistName = requestData['artistName'];
+		const relatedArtists = await getRelatedArtists(artistName, parsed['spotifyid']);
 
 		return Response.json(relatedArtists);
 	} catch (err) {

@@ -158,7 +158,7 @@ async function getUserInfo(authCode:string): Promise<User> {
 }
 
 export type Artist = {
-	name: string,
+	artist_name: string,
 	artist_id: string,
 	images: Array<Image>,
 	related_artists: Array<Artist>,
@@ -200,46 +200,50 @@ async function updateArtists(userID: string, artists:Array<any>) {
 
 	for (const i in artists) {
 		const artistID = artists[i]['id'];
+		const artistName = artists[i]['name'];
 
 		const artist = await db.collection('artists').findOne({
 			artist_id: {$eq: artistID},
 		});
 
 		if (artist === null) {
-			const related_artists = await getRelatedArtists(artistID, userID);
 			await db.collection('artists').updateOne(
 				{artist_id: {$eq: artistID}},
 				{$set: {
 					artist_id: artistID,
-					name: artists[i]['name'],
+					artist_name: artistName,
 					popularity: artists[i]['popularity'],
 					updated: new Date().toISOString(),
-					related_artists,
-				}});
+				}},
+				{upsert:true});
 		}
 	}
 }
 
-async function getRelatedArtists(artistID: string, userID: string): Promise<Array<Artist>> {
+async function getRelatedArtists(artistName: string, userID: string): Promise<Array<Artist>> {
 
 	const client = await clientPromise;
 	const db = client.db('spotify_web_app');
 
+	//search artist by name
+	const indexes = await db.collection('artists').indexes();
+	console.log(indexes);
+	const search = await db.collection('artists').find( { $text: { $search: artistName }}).toArray();
+	const artist = search[0];
+
 	// check to see if artist data is already stored
 
-	const artist = await db.collection('artists').findOne({
-		artist_id: {$eq: artistID},
-	});
+	if (artist.length === 0) {
+		throw new Error('artist data unavailable');
+	}
 
-	if (artist !== null) {
-		if ('related_artists' in artist) {
-			console.log('retrieved data from mongodb');
-			return artist['related_artists'];
-		}
+	if ('related_artists' in artist) {
+		console.log('retrieved data from mongodb');
+		return artist['related_artists'];
 	}
 
 	const accessToken = await getUserToken(userID);
-	const spotifyRelatedArtistsURL = `https://api.spotify.com/v1/artists/${artistID}/related-artists`;
+	const spotifyRelatedArtistsURL = `https://api.spotify.com/v1/artists/${artist['artist_id']}/related-artists`;
 	const fetchInput = {
 		method: 'GET',
 		headers: {
@@ -253,17 +257,17 @@ async function getRelatedArtists(artistID: string, userID: string): Promise<Arra
 	const related_artists = artistData['artists'].map((data:any) => {
 		return {
 			artist_id: data['id'],
-			name: data['name'],
+			artist_name: data['name'],
 		};
 	});
 
 	await db.collection('artists').updateOne(
-		{artist_id: {$eq: artistID}},
+		{artist_id: {$eq: artist['artist_id']}},
 		{$set: {
 			related_artists,
 			updated: new Date().toISOString(),
 		}},
-		{upsert:true});
+		{upsert:false});
 
 	return related_artists;
 }

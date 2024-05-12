@@ -16,7 +16,7 @@ export default function Explore() {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({artistid: '45eNHdiiabvmbp4erw26rg'}),
+				body: JSON.stringify({artistName: 'illeNium'}),
 			})
 				.then((res) => {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
@@ -45,7 +45,7 @@ export default function Explore() {
 				{relatedArtists.map((data: Artist, index) =>
 					<li key={data['artist_id']}>
 						<p>{data['artist_id']}</p>
-						<p>{data['name']}</p>
+						<p>{data['artist_name']}</p>
 					</li>,
 				)}
 			</ol>
