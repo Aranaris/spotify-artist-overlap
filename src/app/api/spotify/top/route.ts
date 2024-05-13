@@ -25,6 +25,5 @@ export async function GET(request: NextRequest) {
 	} else if (topData.length < Number(limit)){
 		console.log(`${topData.length} artists retrieved`);
 	}
-
 	return Response.json(topData);
 }

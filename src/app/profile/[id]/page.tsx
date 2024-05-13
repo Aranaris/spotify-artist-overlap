@@ -84,7 +84,6 @@ export default function Profile({params}: { params: { id: string } }) {
 						<p>{index + 1}.</p>
 						<Image alt='artist image' className={styles.logo} src={data['images'][0]['url']} width={24} height={24}></Image>
 						<p>{data['artist_name']}</p>
-
 					</li>,
 				)}
 			</ol>

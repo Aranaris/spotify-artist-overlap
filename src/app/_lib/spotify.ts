@@ -185,14 +185,10 @@ async function getUserTop(userID: string, type = 'artists', limit = '25', time_r
 
 	const res = await fetch(spotifyUserTopArtistsURL, fetchInput);
 	const userTopData = await res.json();
-	const artists = userTopData['items'];
-	await updateArtists(userID, artists);
-
-	return artists;
-
+	return await updateArtists(userTopData['items']);
 }
 
-async function updateArtists(userID: string, artists:Array<any>) {
+async function updateArtists(artists:Array<any>): Promise<Array<Artist>>{
 	const client = await clientPromise;
 	const db = client.db('spotify_web_app');
 
@@ -201,6 +197,8 @@ async function updateArtists(userID: string, artists:Array<any>) {
 	for (const i in artists) {
 		const artistID = artists[i]['id'];
 		const artistName = artists[i]['name'];
+		artists[i]['artist_name'] = artistName;
+		artists[i]['artist_id'] = artistID;
 
 		const artist = await db.collection('artists').findOne({
 			artist_id: {$eq: artistID},
@@ -218,6 +216,8 @@ async function updateArtists(userID: string, artists:Array<any>) {
 				{upsert:true});
 		}
 	}
+
+	return artists;
 }
 
 async function getRelatedArtists(artistName: string, userID: string): Promise<Array<Artist>> {
