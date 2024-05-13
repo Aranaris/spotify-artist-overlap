@@ -28,7 +28,7 @@ export async function GET(req:Request) {
 		}
 
 		const userData = await getUserInfo(authData['access_token']);
-		const expires = new Date(Date.now() + 3600 * 1000);
+		const expires = new Date(Date.now() + 3600 * 1000 * 24);
 
 		const userTokenData = {
 			access_token: authData['access_token'],
