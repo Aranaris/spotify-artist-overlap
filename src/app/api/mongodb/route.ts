@@ -21,6 +21,9 @@ export async function POST(request: Request) {
 	const userTokenData = await request.json();
 
 	try {
+		if (typeof userTokenData['refresh_token'] === 'undefined') {
+			throw new Error('no refresh token');
+		}
 		await db.collection('tokens').insertOne(userTokenData);
 		console.log('user token added');
 		return Response.json({});

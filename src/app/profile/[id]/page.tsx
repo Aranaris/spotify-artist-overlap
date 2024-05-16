@@ -61,7 +61,7 @@ export default function Profile({params}: { params: { id: string } }) {
 			</div>
 			}
 			<div className={styles['section-header']}>
-				<h2>Top Artists</h2>
+				<h2>Your Top Artists</h2>
 			</div>
 			<form onSubmit={handleGetUserTopArtists} className={styles['form-submit']}>
 				<label>
@@ -87,6 +87,7 @@ export default function Profile({params}: { params: { id: string } }) {
 					</li>,
 				)}
 			</ol>
+			<button type="submit" className={styles.button}>Generate Recommendations</button>
 		</section>
 	);
 }
