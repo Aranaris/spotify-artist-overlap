@@ -34,7 +34,7 @@ async function refreshUserToken(userID: string, refreshToken: string): Promise<s
 	const body = await fetch(url, fetchInput);
 	const authData = await body.json();
 
-	const expires = new Date(Date.now() + 3600 * 1000);
+	const expires = new Date(Date.now() + authData['expires_in']);
 
 	if (typeof authData['refresh_token'] === 'undefined') {
 		authData['refresh_token'] = refreshToken;

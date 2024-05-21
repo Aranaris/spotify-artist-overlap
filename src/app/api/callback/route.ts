@@ -28,7 +28,7 @@ export async function GET(req:Request) {
 		}
 
 		const userData = await getUserInfo(authData['access_token']);
-		const expires = new Date(Date.now() + 3600 * 1000 * 24);
+		const expires = new Date(Date.now() + authData['expires_in']);
 
 		const userTokenData = {
 			access_token: authData['access_token'],
@@ -43,9 +43,10 @@ export async function GET(req:Request) {
 			body: JSON.stringify(userTokenData),
 		});
 
+		const sessionExpiration = new Date(Date.now() + 3600 * 1000 * 24);
 		const sessionCookieData = {
 			spotifyid: userData['id'],
-			expires: JSON.stringify(expires),
+			expires: JSON.stringify(sessionExpiration),
 			display_name: userData['display_name'],
 		};
 
