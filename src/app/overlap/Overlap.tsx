@@ -1,17 +1,52 @@
 'use client';
 
 import styles from '../page.module.css';
-import {useState} from 'react';
 import {Artist} from '../_lib/spotify';
+import {MouseEvent, useState} from 'react';
 
-export default function Overlap() {
-	const [overlapData, setOverlapData] = useState<Array<OverlapAggregation>>([]);
+interface OverlapProps {
+	artists: Array<Artist>,
+}
+
+export default function Overlap({artists}: OverlapProps) {
 
 	type OverlapAggregation = {
 		id: string,
 		name: string,
 		count: number,
 		related: Array<string>,
+	}
+
+	const [showRecs, setShowRecs] = useState(0);
+	const [overlapData, setOverlapData] = useState<OverlapAggregation[]>([]);
+
+	async function handleGenerateRecs(event: MouseEvent<HTMLButtonElement>) {
+		event.preventDefault();
+		console.log('generating recs...');
+		const updatedArtistList = artists;
+		try {
+			for (const artist of updatedArtistList) {
+				await fetch('/api/spotify/related-artists', {
+					method:'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({artistname: artist['artist_name']}),
+				})
+					.then((res) => {
+						if (!res.ok) {
+							throw new Error(`Failed to retrieve data for ${artist['artist_name']}`);
+						}
+						return res.json();
+					}).then((data) => {
+						artist['related_artists'] = data;
+					});
+			}
+			setShowRecs(1);
+			setOverlapData(calculateOverlapData(updatedArtistList));
+		} catch(err: any) {
+			console.log(err.message);
+		}
 	}
 
 	function calculateOverlapData(data: Array<Artist>): Array<OverlapAggregation> {
@@ -47,21 +82,27 @@ export default function Overlap() {
 			});
 	}
 	return (
-		<section className={styles.card}>
-			<h2>Artist Recommendations</h2>
-			<ol className={styles['artist-list']}>
-				{overlapData.length > 0 && overlapData.map((data, index) =>
-					<li key={data['id']}>
-						<p>{index + 1}.</p>
-						<p>{data['name']}</p>
-						<p>{data['count']}</p>
-						<div className={styles['related-artist-list']}><p><em>Matching Artists: </em></p>{data['related'].map((artist) =>
-							<p key={data['id'] + artist}>| {artist} |</p>,
+		<section className={styles.main}>
+			<button onClick={handleGenerateRecs} className={styles.button}>Generate Recommendations</button>
+			{showRecs ? (
+				<section className={styles.center}>
+					<div className={styles['section-header']}>
+						<h2>Artist Recommendations</h2>
+					</div>
+					<ol className={styles['artist-list']}>
+						{overlapData.length > 0 && overlapData.map((data, index) =>
+							<li key={data['id']}>
+								<span>{index + 1}.</span>
+								<span>{data['name']}</span>
+								<div className={styles['related-artist-list']}><p><em>{data['count']} Matching Artists: </em></p>{data['related'].map((artist) =>
+									<p key={data['id'] + artist}>| {artist} |</p>,
+								)}
+								</div>
+							</li>,
 						)}
-						</div>
-					</li>,
-				)}
-			</ol>
+					</ol>
+				</section>
+			):(<p></p>)}
 		</section>
 	);
 }

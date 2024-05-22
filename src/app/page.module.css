@@ -1,7 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   padding: 2rem;
   min-height: 100vh;
@@ -36,7 +36,7 @@
 .description {
   display: inherit;
   justify-content: end;
-  align-items: start;
+  align-items: flex-start;
   font-size: 0.85rem;
   max-width: var(--max-width);
   width: 100%;
@@ -217,8 +217,7 @@
 }
 
 .related-artist-list p {
-	font-size: small;
-
+	font-size: medium;
 }
 
 /* Enable hover only on non-touch devices */

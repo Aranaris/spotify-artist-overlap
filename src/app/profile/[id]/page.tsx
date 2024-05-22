@@ -1,6 +1,6 @@
 'use client';
 
-import {FormEvent, MouseEvent, useEffect, useState} from 'react';
+import {FormEvent, useEffect, useState} from 'react';
 import styles from '../../page.module.css';
 import Image from 'next/image';
 import {Artist} from '@/app/_lib/spotify';
@@ -16,7 +16,6 @@ export default function Profile({params}: { params: { id: string } }) {
 		image_url: '',
 		followers: 0,
 	});
-	const [showRecs, setShowRecs] = useState(false);
 
 	const [userTopArtists, setUserTopArtists] = useState<Artist[]>([]);
 
@@ -30,7 +29,6 @@ export default function Profile({params}: { params: { id: string } }) {
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const rawFormData = {
-			// type: formData.get('type') as string,
 			type: 'artists',
 			limit: formData.get('limit') as string,
 			time_range: formData.get('time_range') as string,
@@ -42,18 +40,11 @@ export default function Profile({params}: { params: { id: string } }) {
 					if (!res.ok) throw new Error('Failed to retrieve data'); return res.json();
 				}).then((data) => {
 					setUserTopArtists(data);
-					// setOverlapData(calculateOverlapData(data));
 				});
 
 		} catch(err: any) {
 			console.log(err.message);
 		}
-	}
-
-	function handleGenerateRecs(event: MouseEvent<HTMLButtonElement>) {
-		event.preventDefault();
-		console.log('generating recs...');
-		setShowRecs(true);
 	}
 
 	return (
@@ -95,8 +86,7 @@ export default function Profile({params}: { params: { id: string } }) {
 					</li>,
 				)}
 			</ol>
-			<button onClick={handleGenerateRecs} className={styles.button}>Generate Recommendations</button>
-			{showRecs && <Overlap></Overlap>}
+			<Overlap artists={userTopArtists}></Overlap>
 		</section>
 	);
 }
