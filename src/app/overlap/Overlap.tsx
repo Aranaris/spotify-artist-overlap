@@ -3,6 +3,8 @@
 import styles from '../page.module.css';
 import {Artist} from '../_lib/spotify';
 import {MouseEvent, useState} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 interface OverlapProps {
 	artists: Array<Artist>,
@@ -82,27 +84,31 @@ export default function Overlap({artists}: OverlapProps) {
 			});
 	}
 	return (
-		<section className={styles.main}>
-			<button onClick={handleGenerateRecs} className={styles.button}>Generate Recommendations</button>
+		<section className={styles.overlap}>
 			{showRecs ? (
-				<section className={styles.center}>
+				<section className={styles.overlap}>
 					<div className={styles['section-header']}>
-						<h2>Artist Recommendations</h2>
+						<h2>Artists to Check Out</h2>
+						<button onClick={handleGenerateRecs} className={styles.button}>
+							<FontAwesomeIcon className='fa-1x' icon={faRefresh}/>
+						</button>
 					</div>
 					<ol className={styles['artist-list']}>
-						{overlapData.length > 0 && overlapData.map((data, index) =>
+						{overlapData.length > 0 && overlapData.map((data) =>
 							<li key={data['id']}>
-								<span>{index + 1}.</span>
 								<span>{data['name']}</span>
-								<div className={styles['related-artist-list']}><p><em>{data['count']} Matching Artists: </em></p>{data['related'].map((artist) =>
-									<p key={data['id'] + artist}>| {artist} |</p>,
-								)}
+								<div className={styles['overlap-artists']}>
+									<p>{data['count']} Matching Artists</p>
+									<div className={styles['related-artist-list']}>{data['related'].map((artist) =>
+										<p key={data['id'] + artist}> {artist}</p>,
+									)}
+									</div>
 								</div>
 							</li>,
 						)}
 					</ol>
 				</section>
-			):(<p></p>)}
+			):(<button onClick={handleGenerateRecs} className={styles.button}>Show Recommendations</button>)}
 		</section>
 	);
 }
