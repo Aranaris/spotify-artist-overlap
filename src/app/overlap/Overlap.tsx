@@ -3,8 +3,8 @@
 import styles from '../page.module.css';
 import {Artist} from '../_lib/spotify';
 import {MouseEvent, useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRefresh } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faRefresh} from '@fortawesome/free-solid-svg-icons';
 
 interface OverlapProps {
 	artists: Array<Artist>,
@@ -88,7 +88,7 @@ export default function Overlap({artists}: OverlapProps) {
 			{showRecs ? (
 				<section className={styles.overlap}>
 					<div className={styles['section-header']}>
-						<h2>Artists to Check Out</h2>
+						<h2>Recommended Artists</h2>
 						<button onClick={handleGenerateRecs} className={styles.button}>
 							<FontAwesomeIcon className='fa-1x' icon={faRefresh}/>
 						</button>
