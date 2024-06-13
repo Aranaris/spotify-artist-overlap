@@ -10,14 +10,14 @@ interface OverlapProps {
 	artists: Array<Artist>,
 }
 
-export default function Overlap({artists}: OverlapProps) {
+type OverlapAggregation = {
+	id: string,
+	name: string,
+	count: number,
+	related?: Array<string>,
+}
 
-	type OverlapAggregation = {
-		id: string,
-		name: string,
-		count: number,
-		related: Array<string>,
-	}
+export default function Overlap({artists}: OverlapProps) {
 
 	const [showRecs, setShowRecs] = useState(0);
 	const [overlapData, setOverlapData] = useState<OverlapAggregation[]>([]);
