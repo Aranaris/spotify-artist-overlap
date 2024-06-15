@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 		return Response.redirect(new URL('/profile', request.url));
 	}
 
-	const redirectURI = 'http://localhost:3000/api/callback/';
+	const redirectURI = `${process.env.BASE_URL}/api/callback/`;
 	const scope = 'user-top-read';
 
 	const params = {

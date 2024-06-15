@@ -48,7 +48,7 @@ async function refreshUserToken(userID: string, refreshToken: string): Promise<s
 		refresh_token: authData['refresh_token'],
 	};
 
-	await fetch('http://localhost:3000/api/mongodb/', {
+	await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
 		method: 'POST',
 		body: JSON.stringify(userTokenData),
 	});
@@ -57,7 +57,7 @@ async function refreshUserToken(userID: string, refreshToken: string): Promise<s
 }
 
 async function getNewTokenFromSpotify(authCode:string): Promise<any> {
-	const redirectURI = 'http://localhost:3000/api/callback/';
+	const redirectURI = `${process.env.BASE_URL}/api/callback/`;
 	const tokenEndpointURL = 'https://accounts.spotify.com/api/token';
 	const fetchInput = {
 		method: 'POST',
@@ -113,7 +113,7 @@ async function getUserInfo(authCode:string): Promise<User> {
 		display_name,
 	};
 
-	await fetch(`http://localhost:3000/api/mongodb/user/${userData['id']}`, {
+	await fetch(`${process.env.BASE_URL}/api/mongodb/user/${userData['id']}`, {
 		method: 'POST',
 		body: JSON.stringify(userData),
 	});

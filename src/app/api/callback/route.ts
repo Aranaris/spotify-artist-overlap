@@ -38,7 +38,7 @@ export async function GET(req:Request) {
 			refresh_token: authData['refresh_token'],
 		};
 
-		await fetch('http://localhost:3000/api/mongodb/', {
+		await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
 			method: 'POST',
 			body: JSON.stringify(userTokenData),
 		});
@@ -57,7 +57,7 @@ export async function GET(req:Request) {
 			expires,
 		});
 
-		return NextResponse.redirect(`http://localhost:3000/profile/${userData['id']}`);
+		return NextResponse.redirect(`${process.env.BASE_URL}/profile/${userData['id']}`);
 	} catch (err) {
 		console.error(err);
 		return new Response('Internal server error', {status: 500});
