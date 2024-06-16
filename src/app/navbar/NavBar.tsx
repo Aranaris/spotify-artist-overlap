@@ -28,8 +28,8 @@ export default function NavBar(props: {session: any}) {
 			</Link>
 			<section className={styles.navlinks}>
 				<Link href='/explore'>Explore</Link>
-				<Link href='/about'>About</Link>
-				<Link href='/demo-api'>Demo API</Link>
+				{/* <Link href='/about'>About</Link>
+				<Link href='/demo-api'>Demo API</Link> */}
 				{!props.session && <button className={styles['spotify-login']} onClick={handleSpotifyClick}>
 					<p>Login With</p>
 					<Image alt='site logo' className={styles.logo} src='/Spotify_Logo_RGB_Black.png' width={70} height={21}></Image>

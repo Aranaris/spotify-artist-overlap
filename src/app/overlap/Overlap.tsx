@@ -99,7 +99,7 @@ export default function Overlap({artists}: OverlapProps) {
 								<span>{data['name']}</span>
 								<div className={styles['overlap-artists']}>
 									<p>{data['count']} Matching Artists</p>
-									<div className={styles['related-artist-list']}>{data['related'].map((artist) =>
+									<div className={styles['related-artist-list']}>{data['related'] && data['related'].map((artist) =>
 										<p key={data['id'] + artist}> {artist}</p>,
 									)}
 									</div>
