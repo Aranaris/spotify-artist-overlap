@@ -48,10 +48,15 @@ async function refreshUserToken(userID: string, refreshToken: string): Promise<s
 		refresh_token: authData['refresh_token'],
 	};
 
-	await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
-		method: 'POST',
-		body: JSON.stringify(userTokenData),
-	});
+	try {
+		await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
+			method: 'POST',
+			body: JSON.stringify(userTokenData),
+		});
+	} catch (err) {
+		console.log(err);
+	}
+
 
 	return authData['access_token'];
 }
@@ -113,10 +118,14 @@ async function getUserInfo(authCode:string): Promise<User> {
 		display_name,
 	};
 
-	await fetch(`${process.env.BASE_URL}/api/mongodb/user/${userData['id']}`, {
-		method: 'POST',
-		body: JSON.stringify(userData),
-	});
+	try {
+		await fetch(`${process.env.BASE_URL}/api/mongodb/user/${userData['id']}`, {
+			method: 'POST',
+			body: JSON.stringify(userData),
+		});
+	} catch (err) {
+		console.log(err);
+	}
 
 	return userData;
 }

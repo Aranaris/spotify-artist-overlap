@@ -37,11 +37,16 @@ export async function GET(req:Request) {
 			scope: authData['scope'],
 			refresh_token: authData['refresh_token'],
 		};
+		try {
+			await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
+				method: 'POST',
+				body: JSON.stringify(userTokenData),
+			});
+		} catch (err) {
+			console.log(err);
+			return new Response('Internal server error', {status: 500});
+		}
 
-		await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
-			method: 'POST',
-			body: JSON.stringify(userTokenData),
-		});
 
 		const sessionExpiration = new Date(Date.now() + 3600 * 1000 * 24);
 		const sessionCookieData = {
