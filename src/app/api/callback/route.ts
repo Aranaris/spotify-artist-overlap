@@ -1,5 +1,5 @@
 import {encrypt} from '@/app/_lib/auth';
-import {getNewTokenFromSpotify, getUserInfo} from '@/app/_lib/spotify';
+import {Token, getNewTokenFromSpotify, getUserInfo, saveTokenToDB} from '@/app/_lib/spotify';
 import {cookies} from 'next/headers';
 import {NextResponse} from 'next/server';
 
@@ -28,9 +28,8 @@ export async function GET(req:Request) {
 		}
 
 		const userData = await getUserInfo(authData['access_token']);
-		const expires = new Date(Date.now() + authData['expires_in']);
-
-		const userTokenData = {
+		const expires = new Date(Date.now() + authData['expires_in'] * 1000);
+		const userTokenData:Token = {
 			access_token: authData['access_token'],
 			spotifyid: userData['id'],
 			expires,
@@ -38,10 +37,7 @@ export async function GET(req:Request) {
 			refresh_token: authData['refresh_token'],
 		};
 		try {
-			await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
-				method: 'POST',
-				body: JSON.stringify(userTokenData),
-			});
+			await saveTokenToDB(userTokenData);
 		} catch (err) {
 			console.log(err);
 			return new Response('Internal server error', {status: 500});

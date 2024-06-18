@@ -9,7 +9,8 @@ async function getUserToken(userID: string): Promise<string> {
 	}, {sort: {expires: -1}});
 
 	if (document !== null) {
-		if (document['expires'] > new Date().toISOString()) {
+		const tokenExpiration = new Date(document['expires']);
+		if (tokenExpiration > new Date()) {
 			return document['access_token'];
 		} else {
 			console.log('token expired, refreshing...');
@@ -40,7 +41,7 @@ async function refreshUserToken(userID: string, refreshToken: string): Promise<s
 		authData['refresh_token'] = refreshToken;
 	}
 
-	const userTokenData = {
+	const userTokenData:Token = {
 		access_token: authData['access_token'],
 		spotifyid: userID,
 		expires,
@@ -49,10 +50,7 @@ async function refreshUserToken(userID: string, refreshToken: string): Promise<s
 	};
 
 	try {
-		await fetch(`${process.env.BASE_URL}/api/mongodb/`, {
-			method: 'POST',
-			body: JSON.stringify(userTokenData),
-		});
+		await saveTokenToDB(userTokenData);
 	} catch (err) {
 		console.log(err);
 	}
@@ -245,6 +243,25 @@ async function getRelatedArtists(artistName: string, userID: string): Promise<Ar
 	return related_artists;
 }
 
+
+export interface Token {
+	access_token: string,
+	spotifyid: string,
+	expires: Date,
+	scope: string,
+	refresh_token: string,
+}
+
+export async function saveTokenToDB(tokenData:Token) {
+	const client = await clientPromise;
+	const db = client.db('spotify_web_app');
+
+	if (typeof tokenData['refresh_token'] === 'undefined') {
+		throw new Error('no refresh token');
+	}
+	await db.collection('tokens').insertOne(tokenData);
+	console.log('user token added');
+}
 export {
 	getNewTokenFromSpotify,
 	getUserInfo,
