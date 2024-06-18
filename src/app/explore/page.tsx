@@ -48,7 +48,6 @@ export default function Explore() {
 			<ol className={styles['artist-list']}>
 				{relatedArtists.map((data: Artist, index) =>
 					<li key={data['artist_id']}>
-						<p>{data['artist_id']}</p>
 						<p>{data['artist_name']}</p>
 					</li>,
 				)}

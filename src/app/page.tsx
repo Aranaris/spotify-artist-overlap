@@ -15,7 +15,7 @@ export default function Home() {
 			</div>
 			<div className={styles.center}>
 				<h2>...Get Started!</h2>
-				<p>Click the Login button to link your Spotify and start discovering music!</p>
+				<p>Click the Login button to link your Spotify account and start discovering music!</p>
 			</div>
 		</main>
 
