@@ -60,7 +60,7 @@ async function refreshUserToken(userID: string, refreshToken: string): Promise<s
 }
 
 async function getNewTokenFromSpotify(authCode:string): Promise<any> {
-	const redirectURI = `${process.env.BASE_URL}/api/callback/`;
+	const redirectURI = `${process.env.BASE_URL}/api/callback`;
 	const tokenEndpointURL = 'https://accounts.spotify.com/api/token';
 	const fetchInput = {
 		method: 'POST',

@@ -27,7 +27,6 @@ export default function NavBar(props: {session: any}) {
 				<p>Muse Metrics</p>
 			</Link>
 			<section className={styles.navlinks}>
-				<Link href='/explore'>Explore</Link>
 				{/* <Link href='/about'>About</Link>
 				<Link href='/demo-api'>Demo API</Link> */}
 				{!props.session && <button className={styles['spotify-login']} onClick={handleSpotifyClick}>
@@ -43,6 +42,9 @@ export default function NavBar(props: {session: any}) {
 						<Menu.Items className={styles['menu-dropdown']}>
 							<Menu.Item>
 								<Link href='/profile'>My Profile</Link>
+							</Menu.Item>
+							<Menu.Item>
+								<Link href='/explore'>Explore</Link>
 							</Menu.Item>
 							<Menu.Item>
 								<Link href='/' onClick={handleLogOutClick}>Log Out</Link>
